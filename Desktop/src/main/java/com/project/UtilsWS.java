@@ -107,7 +107,6 @@ public class UtilsWS {
 
     public void onOpen(Consumer<String> callBack) {
         this.onOpenCallBack = callBack;
-        System.out.println("Estoy Conectado!");
     }
 
     public void onMessage(Consumer<String> callBack) {
@@ -125,6 +124,7 @@ public class UtilsWS {
     public void safeSend(String text) {
         try {
             if (client != null && client.isOpen()) {
+                System.out.println(text);
                 client.send(text);
             } else {
                 System.out.println("WS Error: Client is not connected. Attempting to reconnect...");

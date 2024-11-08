@@ -35,14 +35,15 @@ public class CtrlConfig implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        if(existeArchivoConfig()){
-            txtMessage.setText("Ya existe el archivo!");
-            buttonConectar.setDisable(true);
-        }else{
-            buttonConectar.setOnAction(event -> connect());
-        }
+        // if(existeArchivoConfig()){
+        // txtMessage.setText("Ya existe el archivo!");
+        // buttonConectar.setDisable(true);
+        // }else{
+        // buttonConectar.setOnAction(event -> connect());
+        // }
 
-        
+        buttonConectar.setOnAction(event -> connect());
+
     }
 
     public boolean existeArchivoConfig() {
@@ -88,14 +89,13 @@ public class CtrlConfig implements Initializable {
     private boolean connect() {
 
         if (!textUbicacion.getText().equals("") && !textUrl.getText().equals("")) {
-            try{
+            try {
                 Main.connectToServer();
                 guardarDatosEnXml();
                 return true;
-            }catch(Exception e){
+            } catch (Exception e) {
                 System.out.println("Error !!!!!!!!");
             }
-            
         }
 
         return false;

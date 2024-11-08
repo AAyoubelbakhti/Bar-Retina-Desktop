@@ -4,20 +4,20 @@ import java.util.List;
 
 import org.json.JSONObject;
 
-import javafx.animation.PauseTransition;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 
 public class Main extends Application {
 
     public static UtilsWS wsClient;
     public static CtrlConfig ctrlConfig;
+    public static CtrlProductes ctrlProductes;
+
     public static void main(String[] args) {
-        launch(args);        
+        launch(args);
     }
 
     @Override
@@ -27,8 +27,10 @@ public class Main extends Application {
 
         UtilsViews.parentContainer.setStyle("-fx-font: 14 arial;");
         UtilsViews.addView(getClass(), "ViewConfig", "/assets/viewConfig.fxml");
+        UtilsViews.addView(getClass(), "ViewProductes", "/assets/viewProductes.fxml");
 
         ctrlConfig = (CtrlConfig) UtilsViews.getController("ViewConfig");
+        ctrlProductes = (CtrlProductes) UtilsViews.getController("ViewProductes");
 
         Scene scene = new Scene(UtilsViews.parentContainer);
         stage.setScene(scene);
@@ -45,34 +47,45 @@ public class Main extends Application {
     }
 
     public static void connectToServer() {
-        //ctrlConfig.txtMessage.setTextFill(Color.BLACK);
+        // ctrlConfig.txtMessage.setTextFill(Color.BLACK);
         ctrlConfig.txtMessage.setText("Connecting ...");
+        // String protocol = "ws";
+        // String host = ctrlConfig.textUrl.getText();
+        // String port = "4545";
+        // wsClient = UtilsWS.getSharedInstance(protocol + "://" + "localhost" + ":" +
+        // port);
+        String wsLocation = "ws://localhost:4545";
+        wsClient = UtilsWS.getSharedInstance(wsLocation);
 
-        pauseDuring(1500, () -> { // Give time to show connecting message ...
-            String protocol = "wss";
-            String host = ctrlConfig.textUrl.getText();
-            String port = "443";
-            wsClient = UtilsWS.getSharedInstance(protocol + "://" + host + ":" + port);
-
-            wsClient.onMessage((response) -> {
-                Platform.runLater(() -> {
-                    wsMessage(response);
-                });
+        wsClient.onOpen(message -> {
+            Platform.runLater(() -> {
+                UtilsViews.setViewAnimating("ViewProductes");
             });
-            wsClient.onError((response) -> {
-                Platform.runLater(() -> {
-                    wsError(response);
-                });
+
+        });
+
+        wsClient.onMessage((response) -> {
+            Platform.runLater(() -> {
+                wsMessage(response);
             });
         });
+        wsClient.onError((response) -> {
+            Platform.runLater(() -> {
+                wsError(response);
+            });
+        });
+        wsClient.onClose(message -> {
+            System.out.println("Connexió tancada: " + message);
+        });
+
     }
 
     private static void wsMessage(String response) {
         JSONObject msgObj = new JSONObject(response);
         switch (msgObj.getString("type")) {
-            case "client":
-                // Procesar mensaje de tipo "client"
-                ctrlConfig.txtMessage.setText("Mensaje recibido del servidor: " + response);
+            case "productes":
+                System.out.println("Hola");
+                ctrlProductes.cargarProductos(msgObj.toString());
                 break;
             default:
                 ctrlConfig.txtMessage.setText("Tipo de mensaje desconocido");
@@ -84,12 +97,6 @@ public class Main extends Application {
         if (response.contains(connectionRefused)) {
             ctrlConfig.txtMessage.setTextFill(Color.RED);
             ctrlConfig.txtMessage.setText(connectionRefused);
-            pauseDuring(1500, () -> ctrlConfig.txtMessage.setText(""));
         }
-    }
-
-    public static void pauseDuring(long milliseconds, Runnable action) {
-        PauseTransition pause = new PauseTransition(Duration.millis(milliseconds));
-        pause.setOnFinished(event -> Platform.runLater(action));
     }
 }
