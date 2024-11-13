@@ -3,7 +3,9 @@ package com.project;
 import java.util.List;
 
 import org.json.JSONObject;
+import javafx.util.Duration;
 
+import javafx.animation.PauseTransition;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
@@ -43,7 +45,16 @@ public class Main extends Application {
 
     @Override
     public void stop() {
+        if (wsClient != null) {
+            wsClient.forceExit();
+        }
         System.exit(1);
+    }
+
+     public static void pauseDuring(long milliseconds, Runnable action) {
+        PauseTransition pause = new PauseTransition(Duration.millis(milliseconds));
+        pause.setOnFinished(event -> Platform.runLater(action));
+        pause.play();
     }
 
     public static void connectToServer() {
@@ -54,28 +65,32 @@ public class Main extends Application {
         // String port = "4545";
         // wsClient = UtilsWS.getSharedInstance(protocol + "://" + "localhost" + ":" +
         // port);
-        String wsLocation = "ws://localhost:4545";
-        wsClient = UtilsWS.getSharedInstance(wsLocation);
+        pauseDuring(1500, () -> { // Give time to show connecting message ...
+            String wsLocation = "wss://barretina1.ieti.site:443";
+            wsClient = UtilsWS.getSharedInstance(wsLocation);
+            UtilsViews.setViewAnimating("ViewProductes");
 
-        wsClient.onOpen(message -> {
-            Platform.runLater(() -> {
-                UtilsViews.setViewAnimating("ViewProductes");
-            });
+            // wsClient.onOpen(message -> {
+            //     Platform.runLater(() -> {
+            //         UtilsViews.setViewAnimating("ViewProductes");
+            //     });
 
-        });
+            // });
 
-        wsClient.onMessage((response) -> {
-            Platform.runLater(() -> {
-                wsMessage(response);
+            wsClient.onMessage((response) -> {
+                Platform.runLater(() -> {
+                    System.out.println("WS_MESSAGE: " + response);
+                    wsMessage(response);
+                });
             });
-        });
-        wsClient.onError((response) -> {
-            Platform.runLater(() -> {
-                wsError(response);
+            wsClient.onError((response) -> {
+                Platform.runLater(() -> {
+                    wsError(response);
+                });
             });
-        });
-        wsClient.onClose(message -> {
-            System.out.println("Connexió tancada: " + message);
+            wsClient.onClose(message -> {
+                System.out.println("Connexió tancada: " + message);
+            });
         });
     }
 
@@ -97,6 +112,8 @@ public class Main extends Application {
         if (response.contains(connectionRefused)) {
             ctrlConfig.txtMessage.setTextFill(Color.RED);
             ctrlConfig.txtMessage.setText(connectionRefused);
+            pauseDuring(1500, () -> ctrlConfig.txtMessage.setText(""));
+
         }
     }
 
