@@ -43,7 +43,7 @@ public class Main extends Application {
 
     @Override
     public void stop() {
-        System.exit(1); // Kill all executor services
+        System.exit(1);
     }
 
     public static void connectToServer() {
@@ -77,14 +77,14 @@ public class Main extends Application {
         wsClient.onClose(message -> {
             System.out.println("Connexió tancada: " + message);
         });
-
     }
 
     private static void wsMessage(String response) {
         JSONObject msgObj = new JSONObject(response);
         switch (msgObj.getString("type")) {
+            case "tags":
             case "productes":
-                System.out.println("Hola");
+                System.out.println("Se ha recibido respuesta!");
                 ctrlProductes.cargarProductos(msgObj.toString());
                 break;
             default:
@@ -98,5 +98,10 @@ public class Main extends Application {
             ctrlConfig.txtMessage.setTextFill(Color.RED);
             ctrlConfig.txtMessage.setText(connectionRefused);
         }
+    }
+
+    public static void sendMessageToServer(String message){
+        System.out.println("Se ha enviado el mensaje al servidor");
+        wsClient.safeSend(message);
     }
 }
