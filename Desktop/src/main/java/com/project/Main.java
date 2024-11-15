@@ -15,6 +15,7 @@ public class Main extends Application {
     public static UtilsWS wsClient;
     public static CtrlConfig ctrlConfig;
     public static CtrlProductes ctrlProductes;
+    public static CtrlComandes ctrlComandes;
 
     public static void main(String[] args) {
         launch(args);
@@ -22,16 +23,18 @@ public class Main extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        final int windowWidth = 600;
-        final int windowHeight = 450;
+        final int windowWidth = 850;
+        final int windowHeight = 600;
 
         UtilsViews.parentContainer.setStyle("-fx-font: 14 arial;");
         UtilsViews.addView(getClass(), "ViewConfig", "/assets/viewConfig.fxml");
         UtilsViews.addView(getClass(), "ViewProductes", "/assets/viewProductes.fxml");
+        UtilsViews.addView(getClass(), "ViewComandes", "/assets/viewComandes.fxml");
 
         ctrlConfig = (CtrlConfig) UtilsViews.getController("ViewConfig");
         ctrlProductes = (CtrlProductes) UtilsViews.getController("ViewProductes");
-
+        ctrlComandes = (CtrlComandes) UtilsViews.getController("ViewComandes");
+        
         Scene scene = new Scene(UtilsViews.parentContainer);
         stage.setScene(scene);
         stage.onCloseRequestProperty();
@@ -59,7 +62,7 @@ public class Main extends Application {
 
         wsClient.onOpen(message -> {
             Platform.runLater(() -> {
-                UtilsViews.setViewAnimating("ViewProductes");
+                UtilsViews.setViewAnimating("ViewComandes");
             });
 
         });
