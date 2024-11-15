@@ -54,7 +54,8 @@ public class Main extends Application {
         // String port = "4545";
         // wsClient = UtilsWS.getSharedInstance(protocol + "://" + "localhost" + ":" +
         // port);
-        String wsLocation = "ws://localhost:4545";
+        //String wsLocation = "ws://localhost:4545";
+        String wsLocation = "wss://barretina1.ieti.site:443";
         wsClient = UtilsWS.getSharedInstance(wsLocation);
 
         wsClient.onOpen(message -> {
