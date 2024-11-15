@@ -1,6 +1,8 @@
 package com.project;
 
+import java.io.ByteArrayInputStream;
 import java.net.URL;
+import java.util.Base64;
 import java.util.ResourceBundle;
 
 import org.json.JSONArray;
@@ -33,15 +35,25 @@ public class CtrlProductes implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        botonProductos.setOnAction(event -> Main.sendMessageToServer("productes"));
+        botonProductos.setOnAction(event -> {
+            JSONObject message = new JSONObject();
+            message.put("type", "productes");
+
+            Main.sendMessageToServer(message.toString());
+        });
+
         botonTag.setOnAction(event -> buttonTags());
     }
 
     public void buttonTags() {
         System.out.println("Se ha pulsado el botón de tags");
-        if (!textFieldTag.getText().equals("")){
+        if (!textFieldTag.getText().equals("")) {
+            JSONObject message = new JSONObject();
+            message.put("type", "tags");
             System.out.println("El tag es válido");
-            Main.sendMessageToServer(textFieldTag.getText());
+
+            message.put("body", textFieldTag.getText());
+            Main.sendMessageToServer(message.toString());
         } else {
             System.out.println("El tag no es válido");
         }
@@ -53,7 +65,7 @@ public class CtrlProductes implements Initializable {
         JSONArray productsArray = new JSONArray(jsonObject.getString("products"));
 
         // Obtenemos el contenedor dentro del ScrollPane, suponiendo que sea un VBox
-        VBox productsContainer = new VBox(10); // Espaciado entre productos
+        VBox productsContainer = new VBox(10);
         scrollProductos.setContent(productsContainer);
 
         // Iteramos cada producto y creamos una vista para cada uno
@@ -64,6 +76,19 @@ public class CtrlProductes implements Initializable {
             String name = product.getString("nom");
             String description = product.getString("descripcio");
             String price = product.getString("preu");
+            String imageBase64 = product.getString("imatge");
+
+            // Decodificar la imagen de Base64 a bytes y crear el objeto Image
+            ImageView imageView = new ImageView();
+            try {
+                byte[] imageBytes = Base64.getDecoder().decode(imageBase64);
+                Image image = new Image(new ByteArrayInputStream(imageBytes));
+                imageView.setImage(image);
+                imageView.setFitWidth(100); // Ajusta el tamaño de la imagen según necesites
+                imageView.setPreserveRatio(true);
+            } catch (IllegalArgumentException e) {
+                System.out.println("Error al decodificar la imagen Base64: " + e.getMessage());
+            }
 
             // Creamos una vista para el producto
             VBox productBox = new VBox(5);
@@ -71,7 +96,7 @@ public class CtrlProductes implements Initializable {
             Label descriptionLabel = new Label("Descripción: " + description);
             Label priceLabel = new Label("Precio: " + price + " €");
 
-            productBox.getChildren().addAll(nameLabel, descriptionLabel, priceLabel);
+            productBox.getChildren().addAll(nameLabel, descriptionLabel, priceLabel, imageView);
 
             // Añadimos el producto al contenedor de productos
             productsContainer.getChildren().add(productBox);
