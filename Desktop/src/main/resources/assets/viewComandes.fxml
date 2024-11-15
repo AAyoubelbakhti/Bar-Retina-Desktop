@@ -11,43 +11,44 @@
 
 <BorderPane xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.project.CtrlComandes">
     <top>
-        <VBox alignment="CENTER" spacing="10" style="-fx-background-color: #2A2A2A; -fx-padding: 10;">
-            <Label style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: white;" text="Gestión de Aplicación" />
+        <VBox alignment="CENTER" spacing="10" style="-fx-background-color: #272727; -fx-padding: 10;">
+            <Label style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #e5e5e5;" text="Gestión de Aplicación" />
         </VBox>
     </top>
 
     <center>
         <SplitPane dividerPositions="0.22845953002610966">
             <!-- Panel de botones a la izquierda -->
-            <VBox alignment="TOP_CENTER" maxWidth="175.0" minWidth="175.0" prefWidth="175.0" spacing="10" style="-fx-background-color: #3A3A3A;">
-                <Button fx:id="botonInicio" style="-fx-font-size: 14px; -fx-pref-width: 120px;" text="Inicio">
+            <VBox alignment="TOP_CENTER" maxWidth="175.0" minWidth="175.0" prefWidth="175.0" spacing="10" style="-fx-background-color: #a3a3a3;">
+                <Button fx:id="botonInicio" style="-fx-font-size: 14px; -fx-pref-width: 120px; -fx-background-color: #e5e5e5; -fx-text-fill: #272727;" text="Inicio">
                     <VBox.margin>
                         <Insets top="10.0" />
                     </VBox.margin>
                 </Button>
-                <Button fx:id="botonMesas" style="-fx-font-size: 14px; -fx-pref-width: 120px;" text="Mesas" />
-                <Button fx:id="botonProductos" style="-fx-font-size: 14px; -fx-pref-width: 120px;" text="Productos" />
-                <Button fx:id="botonSalir" style="-fx-font-size: 14px; -fx-pref-width: 120px; -fx-text-fill: red;" text="Salir" />
+                <Button fx:id="botonMesas" style="-fx-font-size: 14px; -fx-pref-width: 120px; -fx-background-color: #e5e5e5; -fx-text-fill: #272727;" text="Mesas" />
+                <Button fx:id="botonProductos" style="-fx-font-size: 14px; -fx-pref-width: 120px; -fx-background-color: #e5e5e5; -fx-text-fill: #272727;" text="Productos" />
+                <Button fx:id="botonSalir" style="-fx-font-size: 14px; -fx-pref-width: 120px; -fx-background-color: #ff0000; -fx-text-fill: white;" text="Salir" />
+                <Button fx:id="botonAyuda" style="-fx-font-size: 14px; -fx-pref-width: 120px; -fx-background-color: #cc0001; -fx-text-fill: white;" text="Ayuda" />
             </VBox>
 
             <!-- Panel central con listas -->
-            <VBox spacing="10" style="-fx-padding: 10;" VBox.vgrow="ALWAYS">
-                <Label style="-fx-font-size: 16px; -fx-font-weight: bold;" text="Listas de elementos" />
+            <VBox spacing="10" style="-fx-padding: 10; -fx-background-color: #e5e5e5;" VBox.vgrow="ALWAYS">
+                <Label style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #272727;" text="Listas de elementos" />
                 <HBox spacing="10" VBox.vgrow="ALWAYS">
                     <!-- Primera lista -->
                     <VBox alignment="TOP_CENTER" spacing="5" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
-                        <Label style="-fx-font-size: 14px; -fx-font-weight: bold;" text="Lista 1" />
-                        <ListView fx:id="listView1" style="-fx-border-color: lightgray;" VBox.vgrow="ALWAYS" />
+                        <Label style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #272727;" text="Lista 1" />
+                        <ListView fx:id="listView1" style="-fx-border-color: #a3a3a3; -fx-background-color: #ffffff;" VBox.vgrow="ALWAYS" />
                     </VBox>
                     <!-- Segunda lista -->
                     <VBox alignment="TOP_CENTER" spacing="5" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
-                        <Label style="-fx-font-size: 14px; -fx-font-weight: bold;" text="Lista 2" />
-                        <ListView fx:id="listView2" style="-fx-border-color: lightgray;" VBox.vgrow="ALWAYS" />
+                        <Label style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #272727;" text="Lista 2" />
+                        <ListView fx:id="listView2" style="-fx-border-color: #a3a3a3; -fx-background-color: #ffffff;" VBox.vgrow="ALWAYS" />
                     </VBox>
                     <!-- Tercera lista -->
                     <VBox alignment="TOP_CENTER" spacing="5" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
-                        <Label style="-fx-font-size: 14px; -fx-font-weight: bold;" text="Lista 3" />
-                        <ListView fx:id="listView3" style="-fx-border-color: lightgray;" VBox.vgrow="ALWAYS" />
+                        <Label style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #272727;" text="Lista 3" />
+                        <ListView fx:id="listView3" style="-fx-border-color: #a3a3a3; -fx-background-color: #ffffff;" VBox.vgrow="ALWAYS" />
                     </VBox>
                 </HBox>
             </VBox>
