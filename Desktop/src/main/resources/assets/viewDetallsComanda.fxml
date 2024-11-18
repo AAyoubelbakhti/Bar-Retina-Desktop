@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Button?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.project.CtrlDetallsComanda">
+    <VBox spacing="10" alignment="CENTER" AnchorPane.leftAnchor="50" AnchorPane.rightAnchor="50" AnchorPane.topAnchor="50" AnchorPane.bottomAnchor="50">
+        <Label fx:id="labelIdComanda" text="ID Comanda:" />
+        <Label fx:id="labelIdTaula" text="ID Mesa:" />
+        <Label fx:id="labelIdCamarer" text="ID Camarero:" />
+        <Label fx:id="labelEstadoComanda" text="Estado:" />
+        <Button fx:id="botonVolver" text="Volver" />
+    </VBox>
+</AnchorPane>

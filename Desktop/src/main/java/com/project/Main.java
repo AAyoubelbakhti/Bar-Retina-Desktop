@@ -1,7 +1,9 @@
 package com.project;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import javafx.application.Application;
@@ -16,6 +18,7 @@ public class Main extends Application {
     public static CtrlConfig ctrlConfig;
     public static CtrlProductes ctrlProductes;
     public static CtrlComandes ctrlComandes;
+    public static CtrlDetallsComanda ctrlDetallsComanda;
 
     public static void main(String[] args) {
         launch(args);
@@ -30,10 +33,12 @@ public class Main extends Application {
         UtilsViews.addView(getClass(), "ViewConfig", "/assets/viewConfig.fxml");
         UtilsViews.addView(getClass(), "ViewProductes", "/assets/viewProductes.fxml");
         UtilsViews.addView(getClass(), "ViewComandes", "/assets/viewComandes.fxml");
+        UtilsViews.addView(getClass(), "ViewDetallsComanda", "/assets/viewDetallsComanda.fxml");
 
         ctrlConfig = (CtrlConfig) UtilsViews.getController("ViewConfig");
         ctrlProductes = (CtrlProductes) UtilsViews.getController("ViewProductes");
         ctrlComandes = (CtrlComandes) UtilsViews.getController("ViewComandes");
+        ctrlDetallsComanda = (CtrlDetallsComanda) UtilsViews.getController("ViewDetallsComanda");
         
         Scene scene = new Scene(UtilsViews.parentContainer);
         stage.setScene(scene);
@@ -57,7 +62,8 @@ public class Main extends Application {
         // String port = "4545";
         // wsClient = UtilsWS.getSharedInstance(protocol + "://" + "localhost" + ":" +
         // port);
-        String wsLocation = "ws://localhost:4545";
+        // String wsLocation = "ws://localhost:4545";
+        String wsLocation = "wss://barretina1.ieti.site:443";
         wsClient = UtilsWS.getSharedInstance(wsLocation);
 
         wsClient.onOpen(message -> {
@@ -90,6 +96,13 @@ public class Main extends Application {
                 System.out.println("Se ha recibido respuesta!");
                 ctrlProductes.cargarProductos(msgObj.toString());
                 break;
+            case "comandes":
+                System.out.println("Se han recibido las comandas!");
+                JSONArray comandes = new JSONArray(msgObj.getString("body"));
+                System.out.println(comandes.toString());
+                ctrlComandes.llenarListasDesdeJSONArray(comandes);
+                break;
+
             default:
                 ctrlConfig.txtMessage.setText("Tipo de mensaje desconocido");
         }

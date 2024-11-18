@@ -31,6 +31,9 @@ public class CtrlProductes implements Initializable {
     private Button botonTag;
 
     @FXML
+    private Button botonPedidos;
+
+    @FXML
     private ScrollPane scrollProductos;
 
     @Override
@@ -43,6 +46,8 @@ public class CtrlProductes implements Initializable {
         });
 
         botonTag.setOnAction(event -> buttonTags());
+
+        botonPedidos.setOnAction(event -> UtilsViews.setViewAnimating("ViewComandes"));
     }
 
     public void buttonTags() {
@@ -79,16 +84,16 @@ public class CtrlProductes implements Initializable {
             String imageBase64 = product.getString("imatge");
 
             // Decodificar la imagen de Base64 a bytes y crear el objeto Image
-            ImageView imageView = new ImageView();
-            try {
-                byte[] imageBytes = Base64.getDecoder().decode(imageBase64);
-                Image image = new Image(new ByteArrayInputStream(imageBytes));
-                imageView.setImage(image);
-                imageView.setFitWidth(100); // Ajusta el tamaño de la imagen según necesites
-                imageView.setPreserveRatio(true);
-            } catch (IllegalArgumentException e) {
-                System.out.println("Error al decodificar la imagen Base64: " + e.getMessage());
-            }
+            // ImageView imageView = new ImageView();
+            // try {
+            //     byte[] imageBytes = Base64.getDecoder().decode(imageBase64);
+            //     Image image = new Image(new ByteArrayInputStream(imageBytes));
+            //     imageView.setImage(image);
+            //     imageView.setFitWidth(100); // Ajusta el tamaño de la imagen según necesites
+            //     imageView.setPreserveRatio(true);
+            // } catch (IllegalArgumentException e) {
+            //     System.out.println("Error al decodificar la imagen Base64: " + e.getMessage());
+            // }
 
             // Creamos una vista para el producto
             VBox productBox = new VBox(5);
@@ -96,7 +101,7 @@ public class CtrlProductes implements Initializable {
             Label descriptionLabel = new Label("Descripción: " + description);
             Label priceLabel = new Label("Precio: " + price + " €");
 
-            productBox.getChildren().addAll(nameLabel, descriptionLabel, priceLabel, imageView);
+            productBox.getChildren().addAll(nameLabel, descriptionLabel, priceLabel);
 
             // Añadimos el producto al contenedor de productos
             productsContainer.getChildren().add(productBox);
