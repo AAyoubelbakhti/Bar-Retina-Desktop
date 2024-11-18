@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.project.CtrlMesas">
+    <top>
+        <VBox alignment="CENTER" spacing="20" style="-fx-background-color: #272727; -fx-padding: 20;">
+            <Button fx:id="botonVolver" style="-fx-font-size: 16px; -fx-pref-width: 150px; -fx-background-color: #e5e5e5; -fx-text-fill: #272727;" text="Volver" onAction="#onVolverClick"/>
+            <Label style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: white;" text="Gestión de Mesas" />
+        </VBox>
+    </top>
+
+    <center>
+        <GridPane hgap="15" vgap="15" style="-fx-padding: 30; -fx-background-color: #e5e5e5;">
+            <!-- Primer fila de mesas -->
+            <HBox spacing="20" alignment="CENTER" GridPane.rowIndex="0">
+                <VBox spacing="10" alignment="CENTER">
+                    <Button fx:id="mesa1" style="-fx-font-size: 18px; -fx-pref-width: 120px; -fx-pref-height: 120px; -fx-background-color: #8c8c8c; -fx-text-fill: white;" text="Mesa 1" />
+                    <Label text="Mesa 1" style="-fx-font-size: 16px; -fx-text-fill: #272727;" />
+                </VBox>
+                <VBox spacing="10" alignment="CENTER">
+                    <Button fx:id="mesa2" style="-fx-font-size: 18px; -fx-pref-width: 120px; -fx-pref-height: 120px; -fx-background-color: #8c8c8c; -fx-text-fill: white;" text="Mesa 2" />
+                    <Label text="Mesa 2" style="-fx-font-size: 16px; -fx-text-fill: #272727;" />
+                </VBox>
+                <VBox spacing="10" alignment="CENTER">
+                    <Button fx:id="mesa3" style="-fx-font-size: 18px; -fx-pref-width: 120px; -fx-pref-height: 120px; -fx-background-color: #8c8c8c; -fx-text-fill: white;" text="Mesa 3" />
+                    <Label text="Mesa 3" style="-fx-font-size: 16px; -fx-text-fill: #272727;" />
+                </VBox>
+                <VBox spacing="10" alignment="CENTER">
+                    <Button fx:id="mesa4" style="-fx-font-size: 18px; -fx-pref-width: 120px; -fx-pref-height: 120px; -fx-background-color: #8c8c8c; -fx-text-fill: white;" text="Mesa 4" />
+                    <Label text="Mesa 4" style="-fx-font-size: 16px; -fx-text-fill: #272727;" />
+                </VBox>
+            </HBox>
+
+            <!-- Segunda fila de mesas -->
+            <HBox spacing="20" alignment="CENTER" GridPane.rowIndex="1">
+                <VBox spacing="10" alignment="CENTER">
+                    <Button fx:id="mesa5" style="-fx-font-size: 18px; -fx-pref-width: 120px; -fx-pref-height: 120px; -fx-background-color: #8c8c8c; -fx-text-fill: white;" text="Mesa 5" />
+                    <Label text="Mesa 5" style="-fx-font-size: 16px; -fx-text-fill: #272727;" />
+                </VBox>
+                <VBox spacing="10" alignment="CENTER">
+                    <Button fx:id="mesa6" style="-fx-font-size: 18px; -fx-pref-width: 120px; -fx-pref-height: 120px; -fx-background-color: #8c8c8c; -fx-text-fill: white;" text="Mesa 6" />
+                    <Label text="Mesa 6" style="-fx-font-size: 16px; -fx-text-fill: #272727;" />
+                </VBox>
+                <VBox spacing="10" alignment="CENTER">
+                    <Button fx:id="mesa7" style="-fx-font-size: 18px; -fx-pref-width: 120px; -fx-pref-height: 120px; -fx-background-color: #8c8c8c; -fx-text-fill: white;" text="Mesa 7" />
+                    <Label text="Mesa 7" style="-fx-font-size: 16px; -fx-text-fill: #272727;" />
+                </VBox>
+                <VBox spacing="10" alignment="CENTER">
+                    <Button fx:id="mesa8" style="-fx-font-size: 18px; -fx-pref-width: 120px; -fx-pref-height: 120px; -fx-background-color: #8c8c8c; -fx-text-fill: white;" text="Mesa 8" />
+                    <Label text="Mesa 8" style="-fx-font-size: 16px; -fx-text-fill: #272727;" />
+                </VBox>
+            </HBox>
+
+            <!-- Tercera fila de mesas -->
+            <HBox spacing="20" alignment="CENTER" GridPane.rowIndex="2">
+                <VBox spacing="10" alignment="CENTER">
+                    <Button fx:id="mesa9" style="-fx-font-size: 18px; -fx-pref-width: 120px; -fx-pref-height: 120px; -fx-background-color: #8c8c8c; -fx-text-fill: white;" text="Mesa 9" />
+                    <Label text="Mesa 9" style="-fx-font-size: 16px; -fx-text-fill: #272727;" />
+                </VBox>
+                <VBox spacing="10" alignment="CENTER">
+                    <Button fx:id="mesa10" style="-fx-font-size: 18px; -fx-pref-width: 120px; -fx-pref-height: 120px; -fx-background-color: #8c8c8c; -fx-text-fill: white;" text="Mesa 10" />
+                    <Label text="Mesa 10" style="-fx-font-size: 16px; -fx-text-fill: #272727;" />
+                </VBox>
+                <VBox spacing="10" alignment="CENTER">
+                    <Button fx:id="mesa11" style="-fx-font-size: 18px; -fx-pref-width: 120px; -fx-pref-height: 120px; -fx-background-color: #8c8c8c; -fx-text-fill: white;" text="Mesa 11" />
+                    <Label text="Mesa 11" style="-fx-font-size: 16px; -fx-text-fill: #272727;" />
+                </VBox>
+                <VBox spacing="10" alignment="CENTER">
+                    <Button fx:id="mesa12" style="-fx-font-size: 18px; -fx-pref-width: 120px; -fx-pref-height: 120px; -fx-background-color: #8c8c8c; -fx-text-fill: white;" text="Mesa 12" />
+                    <Label text="Mesa 12" style="-fx-font-size: 16px; -fx-text-fill: #272727;" />
+                </VBox>
+            </HBox>
+        </GridPane>
+    </center>
+</BorderPane>
