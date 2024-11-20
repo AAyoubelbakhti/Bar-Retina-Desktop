@@ -3,6 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
@@ -11,7 +12,7 @@
 <BorderPane xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.project.CtrlMesas">
     <top>
         <VBox alignment="CENTER" spacing="20" style="-fx-background-color: #272727; -fx-padding: 20;">
-            <Button fx:id="botonVolver" style="-fx-font-size: 16px; -fx-pref-width: 150px; -fx-background-color: #e5e5e5; -fx-text-fill: #272727;" text="Volver" onAction="#onVolverClick"/>
+            <Button fx:id="botonVolver" style="-fx-font-size: 16px; -fx-pref-width: 150px; -fx-background-color: #e5e5e5; -fx-text-fill: #272727;" text="Volver"/>
             <Label style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: white;" text="Gestión de Mesas" />
         </VBox>
     </top>

@@ -31,13 +31,13 @@ public class CtrlComandes implements Initializable {
     private Button botonSalir;
 
     @FXML
-    private ListView<VBox> listaPendientes;
+    private ListView<VBox> listaPagadas;
 
     @FXML
     private ListView<VBox> listaEnCurso;
 
     @FXML
-    private ListView<VBox> listaFinalizados;
+    private ListView<VBox> listaFinalizadas;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -46,15 +46,13 @@ public class CtrlComandes implements Initializable {
         botonMesas.setOnAction(event -> listenerBotonMesas());
 
         botonSalir.setOnAction(event -> {
-            JSONObject message = new JSONObject();
-            message.put("type", "select-comanda");
-            Main.wsClient.safeSend(message.toString());
+            System.exit(1);
         });
     }
 
     public void llenarListasDesdeJSONArray(JSONArray jsonArray) {
         // Crear listas observables para cada estado
-        ObservableList<VBox> pendientes = FXCollections.observableArrayList();
+        ObservableList<VBox> pagadas = FXCollections.observableArrayList();
         ObservableList<VBox> enCurso = FXCollections.observableArrayList();
         ObservableList<VBox> finalizados = FXCollections.observableArrayList();
     
@@ -75,7 +73,7 @@ public class CtrlComandes implements Initializable {
                 int idTaula = comanda.getInt("id_taula");
                 int idCamarer = comanda.getInt("id_cambrer");
                 String estadoComanda = comanda.getString("estat_comanda");
-    
+                String stringProductes = comanda.getString("comanda");
                 // Crear un VBox para representar la comanda
                 VBox vboxComanda = new VBox(5); // Espaciado de 5px
                 vboxComanda.setStyle("-fx-padding: 10px; -fx-border-color: #a3a3a3; -fx-border-width: 1px; -fx-background-color: #f9f9f9;");
@@ -88,41 +86,9 @@ public class CtrlComandes implements Initializable {
                 // Agregar los Labels al VBox
                 vboxComanda.getChildren().addAll(labelComanda, labelTaula, labelCamarero);
     
-                // Crear el botón solo si la comanda no está finalizada
-                if (!estadoComanda.equals("llesta") && !estadoComanda.equals("pagada") && !estadoComanda.equals("completa")) {
-                    Button btnCambiarEstado = new Button();
-                    btnCambiarEstado.setText("Mover a...");
-                    btnCambiarEstado.setOnAction(event -> {
-                        // Cambiar el estado de la comanda dependiendo de su estado actual
-                        String nuevoEstado = estadoComanda;
-                        switch (estadoComanda) {
-                            case "pendent":
-                                nuevoEstado = "en curs";
-                                break;
-                            case "en curs":
-                                nuevoEstado = "llesta";
-                                break;
-                            case "completa":
-                            case "llesta":
-                            case "pagada":
-                                break;
-                        }
-                        // Aquí actualizamos el estado dentro de la comanda si es necesario
-                        actualizarEstadoComanda(idComanda, nuevoEstado);
-    
-                        // Actualizar la vista de las listas
-                        listaPendientes.setItems(pendientes);
-                        listaEnCurso.setItems(enCurso);
-                        listaFinalizados.setItems(finalizados);
-                    });
-    
-                    // Agregar el botón al VBox
-                    vboxComanda.getChildren().add(btnCambiarEstado);
-                }
-    
                 // Asignar un evento de clic al VBox para mostrar los detalles de la comanda
                 vboxComanda.setOnMouseClicked(event -> {
-                    mostrarDetallesComanda(idComanda, idTaula, idCamarer, estadoComanda);
+                    mostrarDetallesComanda(idComanda, idTaula, idCamarer, estadoComanda, stringProductes);
                 });
     
                 // Asignar la comanda al estado correspondiente inicialmente
@@ -131,12 +97,11 @@ public class CtrlComandes implements Initializable {
                         enCurso.add(vboxComanda);
                         break;
                     case "completa":
-                    case "pagada":
                     case "llesta":
                         finalizados.add(vboxComanda);
                         break;
                     default:
-                        pendientes.add(vboxComanda);
+                        pagadas.add(vboxComanda);
                         break;
                 }
             } catch (Exception e) {
@@ -146,9 +111,9 @@ public class CtrlComandes implements Initializable {
         }
     
         // Asignar las listas observables a las ListView
-        listaPendientes.setItems(pendientes);
+        listaPagadas.setItems(pagadas);
         listaEnCurso.setItems(enCurso);
-        listaFinalizados.setItems(finalizados);
+        listaFinalizadas.setItems(finalizados);
     }
     
     // Método para actualizar el estado de la comanda (puedes modificarlo si lo necesitas)
@@ -160,11 +125,22 @@ public class CtrlComandes implements Initializable {
     }
     
     
-    private void mostrarDetallesComanda(int idComanda, int idTaula, int idCamarer, String estadoComanda) {
+    private void mostrarDetallesComanda(int idComanda, int idTaula, int idCamarer, String estadoComanda, String stringProductes) {
         // Cambiar a la vista de detalles
         UtilsViews.setViewAnimating("ViewDetallsComanda");
+        if(!stringProductes.contains("[")){
+            stringProductes = "[]";
+        }
         // Pasar los datos de la comanda al controlador
         Main.ctrlDetallsComanda.mostrarDatosComanda(idComanda, idTaula, idCamarer, estadoComanda);
+        try{
+            JSONArray jsonProductes = new JSONArray(stringProductes);
+            Main.ctrlDetallsComanda.cargarProductos(jsonProductes);
+        } catch(Exception e){
+            System.out.println(e);
+        }
+        
+
     }
     
     
@@ -179,7 +155,7 @@ public class CtrlComandes implements Initializable {
 
     private void listenerBotonMesas() {
         System.out.println("Boton mesas apretado");
-        // UtilsViews.setViewAnimating("ViewTaules");
+        UtilsViews.setViewAnimating("ViewTaules");
     }
 
 }
