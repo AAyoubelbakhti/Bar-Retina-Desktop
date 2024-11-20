@@ -31,6 +31,9 @@ public class CtrlComandes implements Initializable {
     private Button botonSalir;
 
     @FXML
+    private Button botonActualizar;
+
+    @FXML
     private ListView<VBox> listaPendientes;
 
     @FXML
@@ -45,11 +48,13 @@ public class CtrlComandes implements Initializable {
         botonProductos.setOnAction(event -> listenerBotonProductos());
         botonMesas.setOnAction(event -> listenerBotonMesas());
 
-        botonSalir.setOnAction(event -> {
+        botonActualizar.setOnAction(event -> {
             JSONObject message = new JSONObject();
             message.put("type", "select-comanda");
             Main.wsClient.safeSend(message.toString());
         });
+
+
     }
 
     public void llenarListasDesdeJSONArray(JSONArray jsonArray) {
