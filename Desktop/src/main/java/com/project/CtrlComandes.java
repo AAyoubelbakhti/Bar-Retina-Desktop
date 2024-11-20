@@ -103,6 +103,7 @@ public class CtrlComandes implements Initializable {
     
                 // Asignar la comanda al estado correspondiente inicialmente
                 switch (estadoComanda) {
+                    case "pendent":
                     case "en curs":
                         enCurso.add(vboxComanda);
                         break;
