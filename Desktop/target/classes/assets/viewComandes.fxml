@@ -12,7 +12,7 @@
 <BorderPane xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.project.CtrlComandes">
     <top>
         <VBox alignment="CENTER" spacing="10" style="-fx-background-color: #272727; -fx-padding: 10;">
-            <Label style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: white;" text="Gestión de Aplicación" />
+            <Label style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: white;" text="Bar Retina" />
         </VBox>
     </top>
 
@@ -33,22 +33,22 @@
 
             <!-- Panel central con listas -->
             <VBox spacing="10" style="-fx-padding: 10; -fx-background-color: #e5e5e5;" VBox.vgrow="ALWAYS">
-                <Label style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #272727;" text="Listas de elementos" />
+                <Label style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #272727;" text="Pedidos" />
                 <HBox spacing="10" VBox.vgrow="ALWAYS">
                     <!-- Primera lista -->
                     <VBox alignment="TOP_CENTER" spacing="5" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
-                        <Label style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #272727;" text="Pendientes" />
-                        <ListView fx:id="listaPendientes" style="-fx-border-color: #a3a3a3;" VBox.vgrow="ALWAYS" />
+                        <Label style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #272727;" text="En Curso" />
+                        <ListView fx:id="listaEnCurso" style="-fx-border-color: #a3a3a3;" VBox.vgrow="ALWAYS" />
                     </VBox>
                     <!-- Segunda lista -->
                     <VBox alignment="TOP_CENTER" spacing="5" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
-                        <Label style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #272727;" text="En curso" />
-                        <ListView fx:id="listaEnCurso" style="-fx-border-color: #a3a3a3;" VBox.vgrow="ALWAYS" />
+                        <Label style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #272727;" text="Finalizadas" />
+                        <ListView fx:id="listaFinalizadas" style="-fx-border-color: #a3a3a3;" VBox.vgrow="ALWAYS" />
                     </VBox>
                     <!-- Tercera lista -->
                     <VBox alignment="TOP_CENTER" spacing="5" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
-                        <Label style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #272727;" text="Finalizados" />
-                        <ListView fx:id="listaFinalizados" style="-fx-border-color: #a3a3a3;" VBox.vgrow="ALWAYS" />
+                        <Label style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #272727;" text="Pagadas" />
+                        <ListView fx:id="listaPagadas" style="-fx-border-color: #a3a3a3;" VBox.vgrow="ALWAYS" />
                     </VBox>
                 </HBox>
             </VBox>

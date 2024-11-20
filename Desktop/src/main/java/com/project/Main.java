@@ -19,6 +19,7 @@ public class Main extends Application {
     public static CtrlProductes ctrlProductes;
     public static CtrlComandes ctrlComandes;
     public static CtrlDetallsComanda ctrlDetallsComanda;
+    public static CtrlMesas ctrlMesas;
 
     public static void main(String[] args) {
         launch(args);
@@ -26,27 +27,34 @@ public class Main extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        final int windowWidth = 850;
-        final int windowHeight = 600;
+        try {
+            final int windowWidth = 850;
+            final int windowHeight = 600;
 
-        UtilsViews.parentContainer.setStyle("-fx-font: 14 arial;");
-        UtilsViews.addView(getClass(), "ViewConfig", "/assets/viewConfig.fxml");
-        UtilsViews.addView(getClass(), "ViewProductes", "/assets/viewProductes.fxml");
-        UtilsViews.addView(getClass(), "ViewComandes", "/assets/viewComandes.fxml");
-        UtilsViews.addView(getClass(), "ViewDetallsComanda", "/assets/viewDetallsComanda.fxml");
+            UtilsViews.parentContainer.setStyle("-fx-font: 14 arial;");
+            UtilsViews.addView(getClass(), "ViewConfig", "/assets/viewConfig.fxml");
+            UtilsViews.addView(getClass(), "ViewProductes", "/assets/viewProductes.fxml");
+            UtilsViews.addView(getClass(), "ViewComandes", "/assets/viewComandes.fxml");
+            UtilsViews.addView(getClass(), "ViewDetallsComanda", "/assets/viewDetallsComanda.fxml");
+            UtilsViews.addView(getClass(), "ViewTaules", "/assets/viewTaules.fxml");
 
-        ctrlConfig = (CtrlConfig) UtilsViews.getController("ViewConfig");
-        ctrlProductes = (CtrlProductes) UtilsViews.getController("ViewProductes");
-        ctrlComandes = (CtrlComandes) UtilsViews.getController("ViewComandes");
-        ctrlDetallsComanda = (CtrlDetallsComanda) UtilsViews.getController("ViewDetallsComanda");
-        
-        Scene scene = new Scene(UtilsViews.parentContainer);
-        stage.setScene(scene);
-        stage.onCloseRequestProperty();
-        stage.setTitle("Bar Retina Desktop App");
-        stage.setMinWidth(windowWidth);
-        stage.setMinHeight(windowHeight);
-        stage.show();
+            ctrlConfig = (CtrlConfig) UtilsViews.getController("ViewConfig");
+            ctrlProductes = (CtrlProductes) UtilsViews.getController("ViewProductes");
+            ctrlComandes = (CtrlComandes) UtilsViews.getController("ViewComandes");
+            ctrlDetallsComanda = (CtrlDetallsComanda) UtilsViews.getController("ViewDetallsComanda");
+            ctrlMesas = (CtrlMesas) UtilsViews.getController("ViewTaules");
+
+            Scene scene = new Scene(UtilsViews.parentContainer);
+            stage.setScene(scene);
+            stage.onCloseRequestProperty();
+            stage.setTitle("Bar Retina Desktop App");
+            stage.setMinWidth(windowWidth);
+            stage.setMinHeight(windowHeight);
+            stage.show();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
     }
 
     @Override
@@ -69,6 +77,9 @@ public class Main extends Application {
         wsClient.onOpen(message -> {
             Platform.runLater(() -> {
                 UtilsViews.setViewAnimating("ViewComandes");
+                JSONObject context = new JSONObject();
+                context.put("type", "select-comanda");
+                Main.wsClient.safeSend(context.toString());
             });
 
         });
@@ -101,6 +112,7 @@ public class Main extends Application {
                 JSONArray comandes = new JSONArray(msgObj.getString("body"));
                 System.out.println(comandes.toString());
                 ctrlComandes.llenarListasDesdeJSONArray(comandes);
+                // ctrlMesas.cargarDatos(comandes.toString());
                 break;
 
             default:
@@ -116,7 +128,7 @@ public class Main extends Application {
         }
     }
 
-    public static void sendMessageToServer(String message){
+    public static void sendMessageToServer(String message) {
         System.out.println("Se ha enviado el mensaje al servidor");
         wsClient.safeSend(message);
     }
