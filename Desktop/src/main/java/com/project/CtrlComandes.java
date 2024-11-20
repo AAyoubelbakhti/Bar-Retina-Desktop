@@ -116,15 +116,6 @@ public class CtrlComandes implements Initializable {
         listaFinalizadas.setItems(finalizados);
     }
     
-    // Método para actualizar el estado de la comanda (puedes modificarlo si lo necesitas)
-    private void actualizarEstadoComanda(int idComanda, String nuevoEstado) {
-        
-        
-
-        System.out.println("Comanda " + idComanda + " ha cambiado a estado: " + nuevoEstado);
-    }
-    
-    
     private void mostrarDetallesComanda(int idComanda, int idTaula, int idCamarer, String estadoComanda, String stringProductes) {
         // Cambiar a la vista de detalles
         UtilsViews.setViewAnimating("ViewDetallsComanda");
