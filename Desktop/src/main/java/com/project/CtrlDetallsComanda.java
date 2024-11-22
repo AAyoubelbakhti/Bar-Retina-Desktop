@@ -119,15 +119,12 @@ public class CtrlDetallsComanda implements Initializable {
                 // Añadir eventos a los botones
                 btnEnCurso.setOnAction(e -> {
                     actualizarEstadoProducto(producto, "en curs", labelEstado);
-                    actualizarComanda(jsonArray);
                 });
                 btnListo.setOnAction(e -> {
                     actualizarEstadoProducto(producto, "llest", labelEstado);
-                    actualizarComanda(jsonArray);
                 });
                 btnPagado.setOnAction(e -> {
                     actualizarEstadoProducto(producto, "pagat", labelEstado);
-                    actualizarComanda(jsonArray);
                 });
     
                 // Añadir los elementos al VBox
@@ -148,20 +145,60 @@ public class CtrlDetallsComanda implements Initializable {
     
     private void actualizarEstadoProducto(JSONObject producto, String nuevoEstado, Label labelEstado) {
         try {
-            // Actualizar el estado en el JSONObject
-            producto.put("estat_producte", nuevoEstado);
+            // Estado actual y cantidad del producto
+            String estadoActual = producto.getString("estat_producte");
+            int cantidadActual = producto.getInt("quantitat");
+            
+            producto.put("quantitat", cantidadActual - 1);
     
-            // Actualizar la etiqueta visual
-            labelEstado.setText("Estado: " + nuevoEstado);
+            // Validar que el cambio es válido
+            boolean eliminar = false;
+            if (cantidadActual <= 0) {
+                eliminar = true;
+                System.out.println("No hay suficientes productos para mover al nuevo estado.");
+                return;
+            }
     
+            // Buscar si existe un producto con el nuevo estado
+            boolean estadoEncontrado = false;
+            for (int i = 0; i < productes.length(); i++) {
+                JSONObject prod = productes.getJSONObject(i);
+                if (prod.getString("estat_producte").equals(nuevoEstado) && prod.getString("nom").equals(producto.getString("nom"))) {
+                    // Incrementar cantidad en el nuevo estado
+                    prod.put("quantitat", prod.getInt("quantitat") + 1);
+                    estadoEncontrado = true;
+                    if (!eliminar){
+                        break;
+                    }
+                }
+                if (prod.getInt("quantitat") <= 0){
+                    productes.remove(i);
+                    eliminar = false;
+                    if(estadoEncontrado){
+                        break;
+                    }
+                }
+            }
+    
+            // Si no se encontró, duplicar el producto con el nuevo estado
+            if (!estadoEncontrado) {
+                JSONObject nuevoProducto = new JSONObject(producto.toString());
+                nuevoProducto.put("estat_producte", nuevoEstado);
+                nuevoProducto.put("quantitat", 1);
+                productes.put(nuevoProducto);
+            }
+            cargarProductos(productes);
+
             // Log para depuración
             System.out.println("Producto actualizado: " + producto.toString());
-
-            // actualizarComanda();
+    
+            // Actualizar la comanda en el servidor
+            actualizarComanda(productes);
         } catch (JSONException e) {
             System.out.println("Error actualizando estado: " + e.getMessage());
         }
     }
+    
 
     private void actualizarComanda(JSONArray jsonProductes){
         System.out.println(jsonProductes);
@@ -179,7 +216,7 @@ public class CtrlDetallsComanda implements Initializable {
         }
         JSONObject message = new JSONObject();
         message.put("type", "update-comanda");
-        message.put("body", comandasJson.toString());
+        message.put("body", comandasJson);
 
         Main.sendMessageToServer(message.toString());
     }
