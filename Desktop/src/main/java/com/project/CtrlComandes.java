@@ -1,5 +1,6 @@
 package com.project;
 
+import java.math.BigDecimal;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -84,6 +85,7 @@ public class CtrlComandes implements Initializable {
                 int idCamarer = comanda.getInt("id_cambrer");
                 String estadoComanda = comanda.getString("estat_comanda");
                 String stringProductes = comanda.getString("comanda");
+                Double preuComanda = comanda.getBigDecimal("preu_comanda").doubleValue();
                 // Crear un VBox para representar la comanda
                 VBox vboxComanda = new VBox(5); // Espaciado de 5px
                 vboxComanda.setStyle("-fx-padding: 10px; -fx-border-color: #a3a3a3; -fx-border-width: 1px; -fx-background-color: #f9f9f9;");
@@ -92,13 +94,14 @@ public class CtrlComandes implements Initializable {
                 Label labelComanda = new Label("Comanda: " + idComanda);
                 Label labelTaula = new Label("Mesa: " + idTaula);
                 Label labelCamarero = new Label("Camarero: " + idCamarer);
+                // Label labelPreuComanda = new Label("Preu: "+ preuComanda+"€");
     
                 // Agregar los Labels al VBox
                 vboxComanda.getChildren().addAll(labelComanda, labelTaula, labelCamarero);
     
                 // Asignar un evento de clic al VBox para mostrar los detalles de la comanda
                 vboxComanda.setOnMouseClicked(event -> {
-                    mostrarDetallesComanda(idComanda, idTaula, idCamarer, estadoComanda, stringProductes);
+                    mostrarDetallesComanda(idComanda, idTaula, idCamarer, estadoComanda, stringProductes, preuComanda);
                 });
     
                 // Asignar la comanda al estado correspondiente inicialmente
@@ -127,14 +130,14 @@ public class CtrlComandes implements Initializable {
         listaFinalizadas.setItems(finalizados);
     }
     
-    private void mostrarDetallesComanda(int idComanda, int idTaula, int idCamarer, String estadoComanda, String stringProductes) {
+    private void mostrarDetallesComanda(int idComanda, int idTaula, int idCamarer, String estadoComanda, String stringProductes, double preuComanda) {
         // Cambiar a la vista de detalles
         UtilsViews.setViewAnimating("ViewDetallsComanda");
         if(!stringProductes.contains("[")){
             stringProductes = "[]";
         }
         // Pasar los datos de la comanda al controlador
-        Main.ctrlDetallsComanda.mostrarDatosComanda(idComanda, idTaula, idCamarer, estadoComanda);
+        Main.ctrlDetallsComanda.mostrarDatosComanda(idComanda, idTaula, idCamarer, estadoComanda, preuComanda);
         try{
             JSONArray jsonProductes = new JSONArray(stringProductes);
             Main.ctrlDetallsComanda.cargarProductos(jsonProductes);

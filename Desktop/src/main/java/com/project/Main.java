@@ -130,6 +130,8 @@ public class Main extends Application {
 
     public static void sendMessageToServer(String message) {
         System.out.println("Se ha enviado el mensaje al servidor");
+        System.out.println(message);
         wsClient.safeSend(message);
+        System.out.println("Hola");
     }
 }
