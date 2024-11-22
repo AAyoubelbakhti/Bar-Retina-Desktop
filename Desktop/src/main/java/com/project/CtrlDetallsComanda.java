@@ -167,7 +167,7 @@ public class CtrlDetallsComanda implements Initializable {
         System.out.println(jsonProductes);
         JSONObject comandasJson = new JSONObject();
         try {
-            comandasJson.put("idTaula", idTaula+123);
+            comandasJson.put("idTaula", idTaula);
             comandasJson.put("idCambrer", idCambrer);
             comandasJson.put("estatComanda", estatComanda);
             comandasJson.put("preuComanda", preuComanda);
