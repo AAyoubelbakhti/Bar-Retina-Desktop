@@ -17,8 +17,6 @@ import org.json.JSONObject;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 
-
-
 public class CtrlDetallsComanda implements Initializable {
 
     @FXML
@@ -54,7 +52,9 @@ public class CtrlDetallsComanda implements Initializable {
         botonVolver.setOnAction(event -> volverAVistaComandas());
     }
 
-    public void mostrarDatosComanda(int idComanda, int idTaula, int idCamarer, String estadoComanda, double precioComanda) {
+    public void mostrarDatosComanda(int idComanda, int idTaula, int idCamarer, String estadoComanda,
+            double precioComanda) {
+        productes = null;
         labelIdComanda.setText("ID Comanda: " + idComanda);
         labelIdTaula.setText("ID Mesa: " + idTaula);
         this.idTaula = idTaula;
@@ -65,57 +65,61 @@ public class CtrlDetallsComanda implements Initializable {
         labelPrecioComanda.setText("Precio: " + precioComanda);
         this.preuComanda = precioComanda;
     }
-    
+
     public void cargarProductos(JSONArray jsonArray) {
 
-        productes = jsonArray;
+        if (productes == null) {
+            productes = jsonArray;
+        }
         // Crear una lista observable para los VBoxes
         ObservableList<VBox> productos = FXCollections.observableArrayList();
-    
+
         // Recorrer el JSONArray
         for (int i = 0; i < jsonArray.length(); i++) {
             try {
                 // Obtener el producto actual
                 JSONObject producto = jsonArray.getJSONObject(i);
-    
+
                 // Validar que el producto tiene las claves necesarias
-                if (!producto.has("nom") || !producto.has("quantitat") || !producto.has("preu") || !producto.has("descripcio")) {
+                if (!producto.has("nom") || !producto.has("quantitat") || !producto.has("preu")
+                        || !producto.has("descripcio")) {
                     System.out.println("Producto con claves faltantes: " + producto.toString());
                     continue; // Saltar a la siguiente entrada
                 }
-    
+
                 // Extraer los datos del producto
                 String nombre = producto.getString("nom");
                 int cantidad = producto.getInt("quantitat");
                 double precio = producto.getDouble("preu");
                 String descripcion = producto.getString("descripcio");
-    
+
                 // Si el producto no tiene estado, agregarlo con un valor predeterminado
                 if (!producto.has("estat_producte")) {
                     producto.put("estat_producte", "pendent");
                 }
-    
+
                 // Crear un VBox para representar el producto
                 VBox vboxProducto = new VBox(5); // Espaciado de 5px
-                vboxProducto.setStyle("-fx-padding: 10px; -fx-border-color: #a3a3a3; -fx-border-width: 1px; -fx-background-color: #f9f9f9;");
-    
+                vboxProducto.setStyle(
+                        "-fx-padding: 10px; -fx-border-color: #a3a3a3; -fx-border-width: 1px; -fx-background-color: #f9f9f9;");
+
                 // Crear los Labels con la información del producto
                 Label labelNombre = new Label("Producto: " + nombre);
                 Label labelCantidad = new Label("Cantidad: " + cantidad);
                 Label labelPrecio = new Label("Precio: " + String.format("%.2f €", precio));
                 Label labelDescripcion = new Label("Descripción: " + descripcion);
-    
+
                 // Mostrar el estado actual del producto
                 Label labelEstado = new Label("Estado: " + producto.getString("estat_producte"));
-    
+
                 // Crear botones
                 Button btnEnCurso = new Button("En curso");
                 Button btnListo = new Button("Listo");
                 Button btnPagado = new Button("Pagado");
-    
+
                 // Contenedor para los botones
                 HBox hboxBotones = new HBox(10, btnEnCurso, btnListo, btnPagado); // Espaciado de 10px
-    
+
                 // Añadir eventos a los botones
                 btnEnCurso.setOnAction(e -> {
                     actualizarEstadoProducto(producto, "en curs", labelEstado);
@@ -126,81 +130,79 @@ public class CtrlDetallsComanda implements Initializable {
                 btnPagado.setOnAction(e -> {
                     actualizarEstadoProducto(producto, "pagat", labelEstado);
                 });
-    
+
                 // Añadir los elementos al VBox
-                vboxProducto.getChildren().addAll(labelNombre, labelCantidad, labelPrecio, labelDescripcion, labelEstado, hboxBotones);
-    
+                vboxProducto.getChildren().addAll(labelNombre, labelCantidad, labelPrecio, labelDescripcion,
+                        labelEstado, hboxBotones);
+
                 // Añadir el VBox a la lista observable
                 productos.add(vboxProducto);
-    
+
             } catch (Exception e) {
                 System.out.println("Error procesando producto: " + e.getMessage());
                 e.printStackTrace(); // Para depuración
             }
         }
-    
+
         // Asignar la lista observable al ListView
         listViewProductos.setItems(productos);
     }
-    
+
     private void actualizarEstadoProducto(JSONObject producto, String nuevoEstado, Label labelEstado) {
         try {
-            // Estado actual y cantidad del producto
             String estadoActual = producto.getString("estat_producte");
             int cantidadActual = producto.getInt("quantitat");
-            
-            producto.put("quantitat", cantidadActual - 1);
-    
-            // Validar que el cambio es válido
-            boolean eliminar = false;
+
+            // Validar que hay suficientes productos
             if (cantidadActual <= 0) {
-                eliminar = true;
                 System.out.println("No hay suficientes productos para mover al nuevo estado.");
                 return;
             }
-    
-            // Buscar si existe un producto con el nuevo estado
+
+            producto.put("quantitat", cantidadActual - 1);
+
+            boolean eliminar = cantidadActual - 1 <= 0;
             boolean estadoEncontrado = false;
-            for (int i = 0; i < productes.length(); i++) {
+
+            // Iterar sobre los productos
+            for (int i = productes.length() - 1; i >= 0; i--) {
                 JSONObject prod = productes.getJSONObject(i);
-                if (prod.getString("estat_producte").equals(nuevoEstado) && prod.getString("nom").equals(producto.getString("nom"))) {
-                    // Incrementar cantidad en el nuevo estado
+                if (prod.getString("estat_producte").equals(nuevoEstado) &&
+                        prod.getString("nom").equals(producto.getString("nom"))) {
                     prod.put("quantitat", prod.getInt("quantitat") + 1);
                     estadoEncontrado = true;
-                    if (!eliminar){
+                    if (!eliminar) {
                         break;
                     }
                 }
-                if (prod.getInt("quantitat") <= 0){
+                if (eliminar && prod.getString("estat_producte").equals(estadoActual) &&
+                        prod.getString("nom").equals(producto.getString("nom"))) {
                     productes.remove(i);
                     eliminar = false;
-                    if(estadoEncontrado){
+                    if (estadoEncontrado) {
                         break;
                     }
                 }
             }
-    
-            // Si no se encontró, duplicar el producto con el nuevo estado
+
+            // Crear un nuevo producto si no se encontró el estado
             if (!estadoEncontrado) {
                 JSONObject nuevoProducto = new JSONObject(producto.toString());
                 nuevoProducto.put("estat_producte", nuevoEstado);
                 nuevoProducto.put("quantitat", 1);
                 productes.put(nuevoProducto);
             }
-            cargarProductos(productes);
 
-            // Log para depuración
+            cargarProductos(productes);
             System.out.println("Producto actualizado: " + producto.toString());
-    
-            // Actualizar la comanda en el servidor
             actualizarComanda(productes);
+
         } catch (JSONException e) {
             System.out.println("Error actualizando estado: " + e.getMessage());
         }
     }
-    
 
-    private void actualizarComanda(JSONArray jsonProductes){
+    private void actualizarComanda(JSONArray jsonProductes) {
         System.out.println(jsonProductes);
         JSONObject comandasJson = new JSONObject();
         try {
@@ -220,7 +222,6 @@ public class CtrlDetallsComanda implements Initializable {
 
         Main.sendMessageToServer(message.toString());
     }
-    
 
     private void volverAVistaComandas() {
         UtilsViews.setViewAnimating("ViewComandes");
