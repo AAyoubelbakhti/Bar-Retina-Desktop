@@ -115,6 +115,18 @@ public class Main extends Application {
                 // ctrlMesas.cargarDatos(comandes.toString());
                 break;
 
+            case "comanda-taula":
+                System.out.println("hola2");
+                System.out.println(msgObj);
+                JSONObject comanda  = new JSONObject(msgObj.getString("body"));
+                System.out.println("hola3");
+                UtilsViews.setViewAnimating("ViewDetallsComanda");
+                System.out.println("hola4");
+                ctrlDetallsComanda.mostrarDatosComanda(comanda.getInt("id_comanda"), comanda.getInt("id_taula"), comanda.getInt("id_cambrer"), comanda.getString("estat_comanda"), comanda.getDouble("preu_comanda"));
+                System.out.println("hola5");
+                ctrlDetallsComanda.cargarProductos(new JSONArray(comanda.getString("comanda")));
+                break;
+
             default:
                 ctrlConfig.txtMessage.setText("Tipo de mensaje desconocido");
         }

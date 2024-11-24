@@ -52,8 +52,7 @@ public class CtrlDetallsComanda implements Initializable {
         botonVolver.setOnAction(event -> volverAVistaComandas());
     }
 
-    public void mostrarDatosComanda(int idComanda, int idTaula, int idCamarer, String estadoComanda,
-            double precioComanda) {
+    public void mostrarDatosComanda(int idComanda, int idTaula, int idCamarer, String estadoComanda, double precioComanda) {
         productes = null;
         labelIdComanda.setText("ID Comanda: " + idComanda);
         labelIdTaula.setText("ID Mesa: " + idTaula);
