@@ -17,6 +17,7 @@ public class Main extends Application {
     public static UtilsWS wsClient;
     public static CtrlConfig ctrlConfig;
     public static CtrlProductes ctrlProductes;
+    public static CtrlMesVenuts ctrlMesVenuts;
     public static CtrlComandes ctrlComandes;
     public static CtrlDetallsComanda ctrlDetallsComanda;
     public static CtrlMesas ctrlMesas;
@@ -34,12 +35,15 @@ public class Main extends Application {
             UtilsViews.parentContainer.setStyle("-fx-font: 14 arial;");
             UtilsViews.addView(getClass(), "ViewConfig", "/assets/viewConfig.fxml");
             UtilsViews.addView(getClass(), "ViewProductes", "/assets/viewProductes.fxml");
+            UtilsViews.addView(getClass(), "ViewMesVenuts", "/assets/viewMesVenuts.fxml");
             UtilsViews.addView(getClass(), "ViewComandes", "/assets/viewComandes.fxml");
             UtilsViews.addView(getClass(), "ViewDetallsComanda", "/assets/viewDetallsComanda.fxml");
             UtilsViews.addView(getClass(), "ViewTaules", "/assets/viewTaules.fxml");
 
             ctrlConfig = (CtrlConfig) UtilsViews.getController("ViewConfig");
             ctrlProductes = (CtrlProductes) UtilsViews.getController("ViewProductes");
+            ctrlMesVenuts = (CtrlMesVenuts) UtilsViews.getController("ViewMesVenuts");
+
             ctrlComandes = (CtrlComandes) UtilsViews.getController("ViewComandes");
             ctrlDetallsComanda = (CtrlDetallsComanda) UtilsViews.getController("ViewDetallsComanda");
             ctrlMesas = (CtrlMesas) UtilsViews.getController("ViewTaules");
@@ -70,8 +74,8 @@ public class Main extends Application {
         // String port = "4545";
         // wsClient = UtilsWS.getSharedInstance(protocol + "://" + "localhost" + ":" +
         // port);
-        // String wsLocation = "ws://localhost:4545";
-        String wsLocation = "wss://barretina1.ieti.site:443";
+        String wsLocation = "ws://localhost:4545";
+        // String wsLocation = "wss://barretina1.ieti.site:443";
         wsClient = UtilsWS.getSharedInstance(wsLocation);
 
         wsClient.onOpen(message -> {
@@ -106,6 +110,10 @@ public class Main extends Application {
             case "productes":
                 System.out.println("Se ha recibido respuesta!");
                 ctrlProductes.cargarProductos(msgObj.toString());
+                break;
+            case "top-productes":
+                System.out.println(msgObj.toString());
+                ctrlMesVenuts.cargarProductos(msgObj.toString());
                 break;
             case "comandes":
                 System.out.println("Se han recibido las comandas!");

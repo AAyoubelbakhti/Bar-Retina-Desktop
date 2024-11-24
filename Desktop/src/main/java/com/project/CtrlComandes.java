@@ -26,6 +26,9 @@ public class CtrlComandes implements Initializable {
     private Button botonProductos;
 
     @FXML
+    private Button botonTopProductos;
+
+    @FXML
     private Button botonMesas;
 
     @FXML
@@ -43,10 +46,13 @@ public class CtrlComandes implements Initializable {
     @FXML
     private ListView<VBox> listaFinalizadas;
 
+
+    // Insettar bototn par air a la vista de topProducts *****
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         botonInicio.setOnAction(event -> listenerBotonInicio());
         botonProductos.setOnAction(event -> listenerBotonProductos());
+        botonTopProductos.setOnAction(event -> listenerBotonTopProductos());
         botonMesas.setOnAction(event -> listenerBotonMesas());
 
         botonActualizar.setOnAction(event -> {
@@ -156,6 +162,10 @@ public class CtrlComandes implements Initializable {
 
     private void listenerBotonProductos() {
         UtilsViews.setViewAnimating("ViewProductes");
+    }
+
+    private void listenerBotonTopProductos() {
+        UtilsViews.setViewAnimating("ViewMesVenuts");
     }
 
     private void listenerBotonMesas() {
