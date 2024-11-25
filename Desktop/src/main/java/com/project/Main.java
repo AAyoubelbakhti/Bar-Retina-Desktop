@@ -112,7 +112,7 @@ public class Main extends Application {
                 ctrlProductes.cargarProductos(msgObj.toString());
                 break;
             case "top-productes":
-                System.out.println(msgObj.toString());
+                //System.out.println(msgObj.toString());
                 ctrlMesVenuts.cargarProductos(msgObj.toString());
                 break;
             case "comandes":

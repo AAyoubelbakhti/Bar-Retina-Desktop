@@ -51,54 +51,49 @@ public class CtrlMesVenuts implements Initializable {
         // Parseamos el JSON
         JSONObject jsonObject = new JSONObject(jsonString);
         JSONArray productsArray = new JSONArray(jsonObject.getString("products"));
-        JSONObject imagesJson = new  JSONObject(jsonObject.getString("imatges"));
-
-        //System.out.println("Dentro de cargar: " + productsArray.toString());
-        
-        // Obtenemos el contenedor dentro del ScrollPane, suponiendo que sea un VBox
-        VBox productsContainer = new VBox(10);
+    
+        // Creamos el contenedor dentro del ScrollPane
+        VBox productsContainer = new VBox(10); // Espaciado vertical entre los productos
+        productsContainer.setStyle("-fx-padding: 16; -fx-background-color: #FFFFFF;"); // Fondo y padding
         scrollProductos.setContent(productsContainer);
-
-        // Iteramos cada producto y creamos una vista para cada uno
+    
+        // Iteramos cada producto y creamos una vista estilizada para cada uno
         for (int i = 0; i < productsArray.length(); i++) {
             JSONObject product = productsArray.getJSONObject(i);
-            try{
-            // Extraemos los datos del producto
-            String name = product.getString("nom");
-            String quantitat = String.valueOf(product.getInt("quantitat"));
-            String imageName= product.getString("imatge");
-            String imageBase64 = imagesJson.getString(imageName);
-            
-
-            // Decodificar la imagen de Base64 a bytes y crear el objeto Image
-            ImageView imageView = new ImageView();
             try {
-                byte[] imageBytes = Base64.getDecoder().decode(imageBase64);
-                Image image = new Image(new ByteArrayInputStream(imageBytes));
-                imageView.setImage(image);
-                imageView.setFitWidth(100); // Ajusta el tamaño de la imagen según necesites
-                imageView.setPreserveRatio(true);
-            } catch (IllegalArgumentException e) {
-                System.out.println("Error al decodificar la imagen Base64: " + e.getMessage());
-            }
-
-
-            // Creamos una vista para el producto
-            VBox productBox = new VBox(5);
-            Label nameLabel = new Label("Nombre: " + name);
-            Label quantityLabel = new Label("Cantidad: " + quantitat);
-          
-
-            productBox.getChildren().addAll(nameLabel, quantityLabel, imageView);
-
-            // Añadimos el producto al contenedor de productos
-            productsContainer.getChildren().add(productBox);
-            
-                
+                // Extraemos los datos del producto
+                String name = product.getString("nom");
+                String quantitat = String.valueOf(product.getInt("quantitat"));
+    
+                // Creamos un contenedor para el producto
+                VBox productBox = new VBox(5); // Espaciado entre elementos del producto
+                productBox.setStyle(
+                    "-fx-background-color: #F5F5F5;" +
+                    "-fx-border-color: #CCCCCC;" +
+                    "-fx-border-radius: 8;" +
+                    "-fx-background-radius: 8;" +
+                    "-fx-padding: 10;" +
+                    "-fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.15), 4, 0, 0, 2);"
+                );
+    
+                // Crear etiquetas estilizadas
+                Label nameLabel = new Label("Nombre: " + name);
+                nameLabel.setStyle("-fx-font-size: 16; -fx-font-weight: bold; -fx-text-fill: #333333;");
+    
+                Label quantityLabel = new Label("Cantidad: " + quantitat);
+                quantityLabel.setStyle("-fx-font-size: 14; -fx-text-fill: #555555;");
+    
+                // Añadir las etiquetas al contenedor del producto
+                productBox.getChildren().addAll(nameLabel, quantityLabel);
+    
+                // Añadimos el producto al contenedor principal
+                productsContainer.getChildren().add(productBox);
+    
             } catch (Exception e) {
-                System.err.println(e);
+                System.err.println("Error procesando producto: " + e.getMessage());
             }
         }
     }
+    
 
 }

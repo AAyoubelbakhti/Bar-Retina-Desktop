@@ -65,51 +65,61 @@ public class CtrlProductes implements Initializable {
     }
 
     public void cargarProductos(String jsonString) {
+        try{
+
+        //System.out.println(jsonString);
         // Parseamos el JSON
         JSONObject jsonObject = new JSONObject(jsonString);
         JSONArray productsArray = new JSONArray(jsonObject.getString("products"));
         JSONObject imagesJson = new  JSONObject(jsonObject.getString("imatges"));
-
-
-        // Obtenemos el contenedor dentro del ScrollPane, suponiendo que sea un VBox
-        VBox productsContainer = new VBox(10);
-        scrollProductos.setContent(productsContainer);
-
-        // Iteramos cada producto y creamos una vista para cada uno
-        for (int i = 0; i < productsArray.length(); i++) {
-            JSONObject product = productsArray.getJSONObject(i);
-
-            // Extraemos los datos del producto
-            String name = product.getString("nom");
-            String description = product.getString("descripcio");
-            String price = product.getString("preu");
-            String imageName= product.getString("imatge");
-            String imageBase64 = imagesJson.getString(imageName);
+        //System.out.println(productsArray.toString());
+       // System.out.println(imagesJson.toString());
+       
+            // Obtenemos el contenedor dentro del ScrollPane, suponiendo que sea un VBox
+            VBox productsContainer = new VBox(10);
+            scrollProductos.setContent(productsContainer);
             
+            // Iteramos cada producto y creamos una vista para cada uno
+            for (int i = 0; i < productsArray.length(); i++) {
+                JSONObject product = productsArray.getJSONObject(i);
+                System.out.println(product.toString());
+                // Extraemos los datos del producto
+                String name = product.getString("nom");
+                String description = product.getString("descripcio");
+                String price = product.getString("preu");
+                String imageName= product.getString("imatge");
+                String imageBase64 = imagesJson.getString(imageName);
+                
 
-            // Decodificar la imagen de Base64 a bytes y crear el objeto Image
-            ImageView imageView = new ImageView();
-            try {
-                byte[] imageBytes = Base64.getDecoder().decode(imageBase64);
-                Image image = new Image(new ByteArrayInputStream(imageBytes));
-                imageView.setImage(image);
-                imageView.setFitWidth(100); // Ajusta el tamaño de la imagen según necesites
-                imageView.setPreserveRatio(true);
-            } catch (IllegalArgumentException e) {
-                System.out.println("Error al decodificar la imagen Base64: " + e.getMessage());
+                // Decodificar la imagen de Base64 a bytes y crear el objeto Image
+                ImageView imageView = new ImageView();
+                try {
+                    byte[] imageBytes = Base64.getDecoder().decode(imageBase64);
+                    Image image = new Image(new ByteArrayInputStream(imageBytes));
+                    imageView.setImage(image);
+                    imageView.setFitWidth(100); // Ajusta el tamaño de la imagen según necesites
+                    imageView.setPreserveRatio(true);
+                } catch (IllegalArgumentException e) {
+                    System.out.println("Error al decodificar la imagen Base64: " + e.getMessage());
+                }
+
+                // Creamos una vista para el producto
+                VBox productBox = new VBox(5);
+                Label nameLabel = new Label("Nombre: " + name);
+                Label descriptionLabel = new Label("Descripción: " + description);
+                Label priceLabel = new Label("Precio: " + price + " €");
+
+                productBox.getChildren().addAll(nameLabel, descriptionLabel, priceLabel, imageView);
+
+                // Añadimos el producto al contenedor de productos
+                productsContainer.getChildren().add(productBox);
+                
             }
+            
+        }catch(Exception e){
+            System.out.println( e.getMessage());
 
-            // Creamos una vista para el producto
-            VBox productBox = new VBox(5);
-            Label nameLabel = new Label("Nombre: " + name);
-            Label descriptionLabel = new Label("Descripción: " + description);
-            Label priceLabel = new Label("Precio: " + price + " €");
-
-            productBox.getChildren().addAll(nameLabel, descriptionLabel, priceLabel, imageView);
-
-            // Añadimos el producto al contenedor de productos
-            productsContainer.getChildren().add(productBox);
-        }
+        } 
     }
 
 }
