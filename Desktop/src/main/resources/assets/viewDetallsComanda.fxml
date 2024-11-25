@@ -5,15 +5,23 @@
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
 
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/22" fx:controller="com.project.CtrlDetallsComanda">
-    <VBox alignment="CENTER" spacing="10" AnchorPane.bottomAnchor="50" AnchorPane.leftAnchor="50" AnchorPane.rightAnchor="50" AnchorPane.topAnchor="50">
-        <Label fx:id="labelIdComanda" text="ID Comanda:" />
-        <Label fx:id="labelIdTaula" text="ID Mesa:" />
-        <Label fx:id="labelIdCamarer" text="ID Camarero:" />
-        <Label fx:id="labelEstadoComanda" text="Estado:" />
-      <Label fx:id="labelPrecioComanda" layoutX="126.0" layoutY="10.0" text="Precio:" />
-        <ListView fx:id="listViewProductos" prefHeight="200" prefWidth="300" />
-        <Button fx:id="botonVolver" text="Volver" />
-    </VBox>
+  <VBox alignment="CENTER" spacing="10" AnchorPane.bottomAnchor="50" AnchorPane.leftAnchor="50" AnchorPane.rightAnchor="50" AnchorPane.topAnchor="50">
+    <Label fx:id="labelIdComanda" text="ID Comanda:" />
+    <Label fx:id="labelIdTaula" text="ID Mesa:" />
+    <Label fx:id="labelIdCamarer" text="ID Camarero:" />
+    <Label fx:id="labelEstadoComanda" text="Estado:" />
+    <Label fx:id="labelPrecioComanda" text="Precio:" />
+    <ListView fx:id="listViewProductos" prefHeight="200" prefWidth="300" />
+    <HBox spacing="10">
+        <Button fx:id="botonPagarSeleccionados" text="Pagar Seleccionados" />
+        <Button fx:id="botonPagarTodo" text="Pagar Todo" />
+    </HBox>
+    <Label fx:id="labelTotalSeleccionado" text="Total Seleccionado: 0.00 €" />
+
+    <Button fx:id="botonVolver" text="Volver" />
+</VBox>
+
 </AnchorPane>
