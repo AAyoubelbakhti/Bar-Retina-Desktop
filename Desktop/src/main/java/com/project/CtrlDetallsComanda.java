@@ -194,14 +194,17 @@ public class CtrlDetallsComanda implements Initializable {
 
             cargarProductos(productes);
             System.out.println("Producto actualizado: " + producto.toString());
-            actualizarComanda(productes);
-
+            if(nuevoEstado.equals("llest")){
+                actualizarComanda(productes, true, producto.getString("nom"));
+            }else{
+                actualizarComanda(productes,false, "");
+            }
         } catch (JSONException e) {
             System.out.println("Error actualizando estado: " + e.getMessage());
         }
     }
 
-    private void actualizarComanda(JSONArray jsonProductes) {
+    private void actualizarComanda(JSONArray jsonProductes, boolean listo, String productoListo) {
         System.out.println(jsonProductes);
         JSONObject comandasJson = new JSONObject();
         try {
@@ -210,6 +213,8 @@ public class CtrlDetallsComanda implements Initializable {
             comandasJson.put("estatComanda", estatComanda);
             comandasJson.put("preuComanda", preuComanda);
             comandasJson.put("comandaTxt", jsonProductes);
+            comandasJson.put("llest", listo);
+            comandasJson.put("producte", productoListo);
 
         } catch (JSONException e) {
             System.out.println("Me duele es escroto");
