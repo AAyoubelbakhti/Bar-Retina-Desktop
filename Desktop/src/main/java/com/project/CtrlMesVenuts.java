@@ -51,6 +51,8 @@ public class CtrlMesVenuts implements Initializable {
         // Parseamos el JSON
         JSONObject jsonObject = new JSONObject(jsonString);
         JSONArray productsArray = new JSONArray(jsonObject.getString("products"));
+        JSONObject imagesJson = new  JSONObject(jsonObject.getString("imatges"));
+
         //System.out.println("Dentro de cargar: " + productsArray.toString());
         
         // Obtenemos el contenedor dentro del ScrollPane, suponiendo que sea un VBox
@@ -64,20 +66,22 @@ public class CtrlMesVenuts implements Initializable {
             // Extraemos los datos del producto
             String name = product.getString("nom");
             String quantitat = String.valueOf(product.getInt("quantitat"));
-         
-           // String imageBase64 = product.getString("imatge");
+            String imageName= product.getString("imatge");
+            String imageBase64 = imagesJson.getString(imageName);
+            
 
             // Decodificar la imagen de Base64 a bytes y crear el objeto Image
-            // ImageView imageView = new ImageView();
-            // try {
-            //     byte[] imageBytes = Base64.getDecoder().decode(imageBase64);
-            //     Image image = new Image(new ByteArrayInputStream(imageBytes));
-            //     imageView.setImage(image);
-            //     imageView.setFitWidth(100); // Ajusta el tamaño de la imagen según necesites
-            //     imageView.setPreserveRatio(true);
-            // } catch (IllegalArgumentException e) {
-            //     System.out.println("Error al decodificar la imagen Base64: " + e.getMessage());
-            // }
+            ImageView imageView = new ImageView();
+            try {
+                byte[] imageBytes = Base64.getDecoder().decode(imageBase64);
+                Image image = new Image(new ByteArrayInputStream(imageBytes));
+                imageView.setImage(image);
+                imageView.setFitWidth(100); // Ajusta el tamaño de la imagen según necesites
+                imageView.setPreserveRatio(true);
+            } catch (IllegalArgumentException e) {
+                System.out.println("Error al decodificar la imagen Base64: " + e.getMessage());
+            }
+
 
             // Creamos una vista para el producto
             VBox productBox = new VBox(5);
@@ -85,7 +89,7 @@ public class CtrlMesVenuts implements Initializable {
             Label quantityLabel = new Label("Cantidad: " + quantitat);
           
 
-            productBox.getChildren().addAll(nameLabel, quantityLabel);
+            productBox.getChildren().addAll(nameLabel, quantityLabel, imageView);
 
             // Añadimos el producto al contenedor de productos
             productsContainer.getChildren().add(productBox);
