@@ -155,7 +155,6 @@ public class CtrlDetallsComanda implements Initializable {
             // Validar que hay suficientes productos
             if (cantidadActual <= 0) {
                 System.out.println("No hay suficientes productos para mover al nuevo estado.");
-                return;
             }
 
             producto.put("quantitat", cantidadActual - 1);
