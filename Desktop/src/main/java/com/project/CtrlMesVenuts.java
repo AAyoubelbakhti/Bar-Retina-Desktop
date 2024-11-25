@@ -51,7 +51,7 @@ public class CtrlMesVenuts implements Initializable {
         // Parseamos el JSON
         JSONObject jsonObject = new JSONObject(jsonString);
         JSONArray productsArray = new JSONArray(jsonObject.getString("products"));
-        
+        //System.out.println("Dentro de cargar: " + productsArray.toString());
         
         // Obtenemos el contenedor dentro del ScrollPane, suponiendo que sea un VBox
         VBox productsContainer = new VBox(10);
@@ -60,10 +60,10 @@ public class CtrlMesVenuts implements Initializable {
         // Iteramos cada producto y creamos una vista para cada uno
         for (int i = 0; i < productsArray.length(); i++) {
             JSONObject product = productsArray.getJSONObject(i);
-
+            try{
             // Extraemos los datos del producto
             String name = product.getString("nom");
-            String quantitat = product.getString("quantitat");
+            String quantitat = String.valueOf(product.getInt("quantitat"));
          
            // String imageBase64 = product.getString("imatge");
 
@@ -89,6 +89,11 @@ public class CtrlMesVenuts implements Initializable {
 
             // Añadimos el producto al contenedor de productos
             productsContainer.getChildren().add(productBox);
+            
+                
+            } catch (Exception e) {
+                System.err.println(e);
+            }
         }
     }
 

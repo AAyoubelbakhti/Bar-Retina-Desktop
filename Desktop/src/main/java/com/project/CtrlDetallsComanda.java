@@ -212,7 +212,6 @@ public class CtrlDetallsComanda implements Initializable {
             comandasJson.put("comandaTxt", jsonProductes);
 
         } catch (JSONException e) {
-            System.out.println("Me duele es escroto");
             throw new RuntimeException(e);
         }
         JSONObject message = new JSONObject();
