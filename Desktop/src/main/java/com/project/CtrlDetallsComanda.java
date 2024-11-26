@@ -274,8 +274,7 @@ public class CtrlDetallsComanda implements Initializable {
                 System.out.println("Error actualizando estado: " + e.getMessage());
             }
         }
-    
-        // Limpiar la lista de productos seleccionados después de pagar
+        
         productosSeleccionados.clear();
         totalSeleccionado = 0;
         actualizarLabelTotalSeleccionado();
