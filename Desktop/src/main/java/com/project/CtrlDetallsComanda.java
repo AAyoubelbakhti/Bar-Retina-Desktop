@@ -76,15 +76,15 @@ public class CtrlDetallsComanda implements Initializable {
         for (int i = 0; i < jsonArray.length(); i++) {
             try {
                 JSONObject producto = jsonArray.getJSONObject(i);
-    
-                if (!producto.has("nom") || !producto.has("quantitat") || !producto.has("preu-unitat") || !producto.has("descripcio")) {
+                System.out.println("Producto: " + producto);
+                if (!producto.has("nom") || !producto.has("quantitat") || !producto.has("preu") || !producto.has("descripcio")) {
                     System.out.println("Producto con claves faltantes: " + producto.toString());
                     continue;
                 }
     
                 String nombre = producto.getString("nom");
                 int cantidad = producto.getInt("quantitat");
-                double precio = producto.getDouble("preu-unitat");
+                double precio = producto.getDouble("preu");
                 String descripcion = producto.getString("descripcio");
     
                 if (!producto.has("estat_producte")) {
@@ -119,6 +119,48 @@ public class CtrlDetallsComanda implements Initializable {
                 spinnerCantidad.setStyle("-fx-background-color: #F0F0F0; -fx-font-size: 12px;");
                 
                 HBox hboxCantidad = new HBox(10, new Label("Seleccionar cantidad:"), spinnerCantidad);
+                spinnerCantidad.valueProperty().addListener((obs, oldValue, newValue) -> {
+                    if (newValue > 0) {
+                        boolean encontrado = false;
+                        // Revisar si el producto ya está en productosSeleccionados
+                        for (JSONObject productoSeleccionado : productosSeleccionados) {
+                            try {
+                                if (productoSeleccionado.getString("nom").equals(producto.getString("nom"))) {
+                                    // Actualizamos la cantidad seleccionada
+                                    totalSeleccionado += (newValue - (oldValue != null ? oldValue : 0)) * precio;
+                                    productoSeleccionado.put("quantitat", newValue);
+                                    encontrado = true;
+                                    break;
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        // Si no está, lo añadimos
+                        if (!encontrado) {
+                            try {
+                                JSONObject productoSeleccionado = new JSONObject(producto.toString());
+                                productoSeleccionado.put("quantitat", newValue);
+                                productosSeleccionados.add(productoSeleccionado);
+                                totalSeleccionado += newValue * precio;
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    } else {
+                        // Si la cantidad seleccionada es 0, lo eliminamos
+                        productosSeleccionados.removeIf(p -> {
+                            try {
+                                return p.getString("nom").equals(producto.getString("nom"));
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                                return false;
+                            }
+                        });
+                        totalSeleccionado -= oldValue * precio;
+                    }
+                    actualizarLabelTotalSeleccionado();
+                });
                 hboxCantidad.setStyle("-fx-alignment: center-left;");
     
                 // Botones de estado
