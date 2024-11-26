@@ -91,76 +91,50 @@ public class CtrlDetallsComanda implements Initializable {
                     producto.put("estat_producte", "pendent");
                 }
     
-                VBox vboxProducto = new VBox(5);
-                vboxProducto.setStyle("-fx-padding: 10px; -fx-border-color: #a3a3a3; -fx-border-width: 1px; -fx-background-color: #f9f9f9;");
+                // VBox que contiene la información del producto
+                VBox vboxProducto = new VBox(10); // Espaciado de 10 entre elementos
+                vboxProducto.setStyle("-fx-padding: 15px; -fx-border-color: #B0B0B0; -fx-border-width: 1px; -fx-background-color: #F9F9F9; -fx-border-radius: 5px;");
     
+                // Labels de información
                 Label labelNombre = new Label("Producto: " + nombre);
+                labelNombre.setStyle("-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #333333;");
+                
                 Label labelCantidad = new Label("Cantidad: " + cantidad);
+                labelCantidad.setStyle("-fx-font-size: 12px; -fx-text-fill: #333333;");
+                
                 Label labelPrecio = new Label("Precio unitario: " + String.format("%.2f €", precio));
+                labelPrecio.setStyle("-fx-font-size: 12px; -fx-text-fill: #333333;");
+                
                 Label labelDescripcion = new Label("Descripción: " + descripcion);
+                labelDescripcion.setStyle("-fx-font-size: 12px; -fx-text-fill: #333333;");
+                
                 Label labelEstado = new Label("Estado: " + producto.getString("estat_producte"));
+                labelEstado.setStyle("-fx-font-size: 12px; -fx-text-fill: #333333;");
     
                 // Spinner para seleccionar cantidad
                 Spinner<Integer> spinnerCantidad = new Spinner<>();
                 SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, cantidad, 0);
                 spinnerCantidad.setValueFactory(valueFactory);
                 spinnerCantidad.setEditable(false);
-    
+                spinnerCantidad.setStyle("-fx-background-color: #F0F0F0; -fx-font-size: 12px;");
+                
                 HBox hboxCantidad = new HBox(10, new Label("Seleccionar cantidad:"), spinnerCantidad);
+                hboxCantidad.setStyle("-fx-alignment: center-left;");
     
                 // Botones de estado
                 Button btnPendiente = new Button("Pendiente");
+                btnPendiente.setStyle("-fx-background-color: #FFA500; -fx-text-fill: white; -fx-font-weight: bold;");
                 Button btnEnCurso = new Button("En curso");
+                btnEnCurso.setStyle("-fx-background-color: #1E90FF; -fx-text-fill: white; -fx-font-weight: bold;");
                 Button btnListo = new Button("Listo");
+                btnListo.setStyle("-fx-background-color: #32CD32; -fx-text-fill: white; -fx-font-weight: bold;");
                 
                 btnPendiente.setOnAction(e -> actualizarEstadoProducto(producto, "pendent", labelEstado));
                 btnEnCurso.setOnAction(e -> actualizarEstadoProducto(producto, "en curs", labelEstado));
                 btnListo.setOnAction(e -> actualizarEstadoProducto(producto, "llest", labelEstado));
     
                 HBox hboxBotones = new HBox(10, btnPendiente, btnEnCurso, btnListo);
-    
-                spinnerCantidad.valueProperty().addListener((obs, oldValue, newValue) -> {
-                    if (newValue > 0) {
-                        boolean encontrado = false;
-                        // Revisar si el producto ya está en productosSeleccionados
-                        for (JSONObject productoSeleccionado : productosSeleccionados) {
-                            try {
-                                if (productoSeleccionado.getString("nom").equals(producto.getString("nom"))) {
-                                    // Actualizamos la cantidad seleccionada
-                                    totalSeleccionado += (newValue - (oldValue != null ? oldValue : 0)) * precio;
-                                    productoSeleccionado.put("quantitat", newValue);
-                                    encontrado = true;
-                                    break;
-                                }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                        // Si no está, lo añadimos
-                        if (!encontrado) {
-                            try {
-                                JSONObject productoSeleccionado = new JSONObject(producto.toString());
-                                productoSeleccionado.put("quantitat", newValue);
-                                productosSeleccionados.add(productoSeleccionado);
-                                totalSeleccionado += newValue * precio;
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    } else {
-                        // Si la cantidad seleccionada es 0, lo eliminamos
-                        productosSeleccionados.removeIf(p -> {
-                            try {
-                                return p.getString("nom").equals(producto.getString("nom"));
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                                return false;
-                            }
-                        });
-                        totalSeleccionado -= oldValue * precio;
-                    }
-                    actualizarLabelTotalSeleccionado();
-                });
+                hboxBotones.setStyle("-fx-alignment: center-left;");
     
                 // Añadir elementos al VBox
                 vboxProducto.getChildren().addAll(labelNombre, labelCantidad, labelPrecio, labelDescripcion, labelEstado, hboxCantidad, hboxBotones);

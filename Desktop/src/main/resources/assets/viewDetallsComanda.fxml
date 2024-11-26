@@ -1,27 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Priority?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/22" fx:controller="com.project.CtrlDetallsComanda">
-  <VBox alignment="CENTER" spacing="10" AnchorPane.bottomAnchor="50" AnchorPane.leftAnchor="50" AnchorPane.rightAnchor="50" AnchorPane.topAnchor="50">
-    <Label fx:id="labelIdComanda" text="ID Comanda:" />
-    <Label fx:id="labelIdTaula" text="ID Mesa:" />
-    <Label fx:id="labelIdCamarer" text="ID Camarero:" />
-    <Label fx:id="labelEstadoComanda" text="Estado:" />
-    <Label fx:id="labelPrecioComanda" text="Precio:" />
-    <ListView fx:id="listViewProductos" prefHeight="200" prefWidth="300" />
-    <HBox spacing="10">
-        <Button fx:id="botonPagarSeleccionados" text="Pagar Seleccionados" />
-        <Button fx:id="botonPagarTodo" text="Pagar Todo" />
-    </HBox>
-    <Label fx:id="labelTotalSeleccionado" text="Total Seleccionado: 0.00 €" />
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/22" fx:controller="com.project.CtrlDetallsComanda" 
+            style="-fx-background-color: #F5F5F5;">
+    
+    <VBox alignment="CENTER" spacing="20" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0"
+          style="-fx-background-color: #FFFFFF; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.15), 10, 0, 0, 0); -fx-padding: 20; -fx-border-color: #CCCCCC; -fx-border-radius: 10;">
+        
+        <!-- Labels -->
+        <Label fx:id="labelIdComanda" text="ID Comanda:" 
+               style="-fx-font-size: 18; -fx-font-weight: bold; -fx-text-fill: #333333;"/>
+        <Label fx:id="labelIdTaula" text="ID Mesa:" 
+               style="-fx-font-size: 18; -fx-font-weight: bold; -fx-text-fill: #333333;"/>
+        <Label fx:id="labelIdCamarer" text="ID Camarero:" 
+               style="-fx-font-size: 18; -fx-font-weight: bold; -fx-text-fill: #333333;"/>
+        <Label fx:id="labelEstadoComanda" text="Estado:" 
+               style="-fx-font-size: 18; -fx-font-weight: bold; -fx-text-fill: #333333;"/>
+        <Label fx:id="labelPrecioComanda" text="Precio:" 
+               style="-fx-font-size: 18; -fx-font-weight: bold; -fx-text-fill: #333333;"/>
+        
+        <!-- Enlarged ListView -->
+        <ListView fx:id="listViewProductos" VBox.vgrow="ALWAYS" 
+                  style="-fx-background-color: #FFFFFF; -fx-border-color: #CCCCCC; -fx-border-radius: 5; -fx-padding: 10;"/>
 
-    <Button fx:id="botonVolver" text="Volver" />
-</VBox>
+        <!-- Buttons for actions -->
+        <HBox spacing="20" style="-fx-padding: 10;">
+            <Button fx:id="botonPagarSeleccionados" text="Pagar Seleccionados" 
+                    HBox.hgrow="ALWAYS" 
+                    style="-fx-background-color: #B22222; -fx-text-fill: #FFFFFF; -fx-font-size: 16; -fx-font-weight: bold; -fx-padding: 10;"/>
+            <Button fx:id="botonPagarTodo" text="Pagar Todo" 
+                    HBox.hgrow="ALWAYS" 
+                    style="-fx-background-color: #B22222; -fx-text-fill: #FFFFFF; -fx-font-size: 16; -fx-font-weight: bold; -fx-padding: 10;"/>
+        </HBox>
 
+        <!-- Total Selected Label -->
+        <Label fx:id="labelTotalSeleccionado" text="Total Seleccionado: 0.00 €" 
+               style="-fx-font-size: 18; -fx-font-weight: bold; -fx-text-fill: #333333;"/>
+
+        <!-- Back Button -->
+        <Button fx:id="botonVolver" text="Volver" 
+                style="-fx-background-color: #B22222; -fx-text-fill: #FFFFFF; -fx-font-size: 16; -fx-font-weight: bold; -fx-padding: 10; -fx-alignment: center;"/>
+    </VBox>
+    
 </AnchorPane>
