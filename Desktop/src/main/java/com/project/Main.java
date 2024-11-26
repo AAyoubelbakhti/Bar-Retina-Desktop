@@ -109,6 +109,8 @@ public class Main extends Application {
             case "tags":
             case "productes":
                 System.out.println("Se ha recibido respuesta!");
+                System.out.println(msgObj.toString());
+
                 ctrlProductes.cargarProductos(msgObj.toString());
                 break;
             case "top-productes":

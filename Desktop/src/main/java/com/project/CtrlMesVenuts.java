@@ -77,7 +77,7 @@ public class CtrlMesVenuts implements Initializable {
                 );
     
                 // Crear etiquetas estilizadas
-                Label nameLabel = new Label("Nombre: " + name);
+                Label nameLabel = new Label(String.valueOf(i+1) + ": " + name);
                 nameLabel.setStyle("-fx-font-size: 16; -fx-font-weight: bold; -fx-text-fill: #333333;");
     
                 Label quantityLabel = new Label("Cantidad: " + quantitat);
