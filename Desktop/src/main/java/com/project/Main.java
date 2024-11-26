@@ -1,10 +1,15 @@
 package com.project;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.w3c.dom.Document;
 
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -62,17 +67,51 @@ public class Main extends Application {
         System.exit(1);
     }
 
+    public static boolean existeArchivoConfig() {
+        try {
+            File archivo = new File("configuracion.xml");
+            return archivo.exists();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    public static String cargarDatosDesdeXml() {
+        try {
+            File archivo = new File("configuracion.xml");
+            if (!archivo.exists()) {
+                return "barretina1.ieti.site";
+            }
+
+            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+            Document doc = dBuilder.parse(archivo);
+
+            doc.getDocumentElement().normalize();
+            String url = doc.getElementsByTagName("url").item(0).getTextContent();
+
+            return url;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "barretina1.ieti.site";
+        }
+    }
+
     public static void connectToServer() {
-        // ctrlConfig.txtMessage.setTextFill(Color.BLACK);
-        ctrlConfig.txtMessage.setText("Connecting ...");
-        // String protocol = "ws";
-        // String host = ctrlConfig.textUrl.getText();
-        // String port = "4545";
-        // wsClient = UtilsWS.getSharedInstance(protocol + "://" + "localhost" + ":" +
-        // port);
+        String host = "";
+        if(!existeArchivoConfig()){
+            ctrlConfig.txtMessage.setText("Connecting ...");
+            host = ctrlConfig.textUrl.getText();
+        }else{
+            host = cargarDatosDesdeXml();
+        }
+        String protocol = "wss";
+        String port = "443";
+        wsClient = UtilsWS.getSharedInstance(protocol + "://" + host + ":" + port);
         // String wsLocation = "ws://localhost:4545";
-        String wsLocation = "wss://barretina1.ieti.site:443";
-        wsClient = UtilsWS.getSharedInstance(wsLocation);
+        // String wsLocation = "wss://barretina1.ieti.site:443";
+        // wsClient = UtilsWS.getSharedInstance(wsLocation);
 
         wsClient.onOpen(message -> {
             Platform.runLater(() -> {
@@ -112,7 +151,6 @@ public class Main extends Application {
                 JSONArray comandes = new JSONArray(msgObj.getString("body"));
                 System.out.println(comandes.toString());
                 ctrlComandes.llenarListasDesdeJSONArray(comandes);
-                // ctrlMesas.cargarDatos(comandes.toString());
                 break;
 
             case "comanda-taula":
