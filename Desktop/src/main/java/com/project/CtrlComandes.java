@@ -46,8 +46,8 @@ public class CtrlComandes implements Initializable {
     @FXML
     private ListView<VBox> listaFinalizadas;
 
+    private JSONArray comandas;
 
-    // Insettar bototn par air a la vista de topProducts *****
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         botonInicio.setOnAction(event -> listenerBotonInicio());
@@ -69,6 +69,8 @@ public class CtrlComandes implements Initializable {
 
     public void llenarListasDesdeJSONArray(JSONArray jsonArray) {
         // Crear listas observables para cada estado
+
+        comandas = jsonArray;
         ObservableList<VBox> pagadas = FXCollections.observableArrayList();
         ObservableList<VBox> enCurso = FXCollections.observableArrayList();
         ObservableList<VBox> finalizados = FXCollections.observableArrayList();
@@ -169,8 +171,8 @@ public class CtrlComandes implements Initializable {
     }
 
     private void listenerBotonMesas() {
-        System.out.println("Boton mesas apretado");
         UtilsViews.setViewAnimating("ViewTaules");
+        Main.ctrlMesas.actualizarEstadoMesas(comandas.toString());
     }
 
 }
