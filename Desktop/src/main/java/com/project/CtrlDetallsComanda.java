@@ -256,14 +256,17 @@ public class CtrlDetallsComanda implements Initializable {
                 // Actualizar el estado de "pagat" en `productosSeleccionados`
                 String nombre = productoSeleccionado.getString("nom");
                 int cantidadSeleccionada = productoSeleccionado.getInt("quantitat");
+                String estadoActual = productoSeleccionado.getString("estat_producte");
                 
                 // Actualizamos la cantidad en la lista global de productos `productes`
                 for (int i = 0; i < productes.length(); i++) {
                     JSONObject producto = productes.getJSONObject(i);
-                    if (producto.getString("nom").equals(nombre)) {
+                    if (producto.getString("nom").equals(nombre) && producto.getString("estat_producte").equals(estadoActual)) {
                         int cantidadRestante = producto.getInt("quantitat") - cantidadSeleccionada;
                         producto.put("quantitat", cantidadRestante);
-                        producto.put("estat_producte", "pagat");  // Cambiar el estado a "pagat"
+                        JSONObject productePagat = new JSONObject(productoSeleccionado.toString());
+                        productePagat.put("estat_producte", "pagat");
+                        productes.put(productePagat);
                         break;
                     }
                 }
@@ -277,7 +280,7 @@ public class CtrlDetallsComanda implements Initializable {
         totalSeleccionado = 0;
         actualizarLabelTotalSeleccionado();
         actualizarComanda(productes, false, "", false);
-        cargarProductos(productes);  // Recargar los productos actualizados
+        cargarProductos(productes);
     }
     
     
