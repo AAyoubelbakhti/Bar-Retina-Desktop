@@ -27,7 +27,7 @@
                 </Button>
                 <Button fx:id="botonMesas" style="-fx-font-size: 14px; -fx-pref-width: 120px; -fx-background-color: #e5e5e5; -fx-text-fill: #272727;" text="Mesas" />
                 <Button fx:id="botonProductos" style="-fx-font-size: 14px; -fx-pref-width: 120px; -fx-background-color: #e5e5e5; -fx-text-fill: #272727;" text="Productos" />
-                <Button fx:id="botonTopProductos" layoutX="53.0" layoutY="14.0" mnemonicParsing="false" text="Top 10 Productos" />
+                <Button fx:id="botonTopProductos" style="-fx-font-size: 14px; -fx-pref-width: 120px; -fx-background-color: #e5e5e5; -fx-text-fill: #272727;" text="Top Productos" />
                 <Button fx:id="botonSalir" style="-fx-font-size: 14px; -fx-pref-width: 120px; -fx-background-color: #e5e5e5; -fx-text-fill: #ff0000;" text="Salir" />
             <Button fx:id="botonActualizar" layoutX="38.0" layoutY="100.0" style="-fx-font-size: 14px; -fx-pref-width: 120px; -fx-background-color: #e5e5e5; -fx-text-fill: #272727;" text="Actualizar" />
             </VBox>
