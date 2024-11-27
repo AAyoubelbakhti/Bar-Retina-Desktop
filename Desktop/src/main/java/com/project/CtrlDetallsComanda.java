@@ -77,14 +77,14 @@ public class CtrlDetallsComanda implements Initializable {
             try {
                 JSONObject producto = jsonArray.getJSONObject(i);
                 System.out.println("Producto: " + producto);
-                if (!producto.has("nom") || !producto.has("quantitat") || !producto.has("preu") || !producto.has("descripcio")) {
+                if (!producto.has("nom") || !producto.has("quantitat") || !producto.has("preu-unitat") || !producto.has("descripcio")) {
                     System.out.println("Producto con claves faltantes: " + producto.toString());
                     continue;
                 }
     
                 String nombre = producto.getString("nom");
                 int cantidad = producto.getInt("quantitat");
-                double precio = producto.getDouble("preu");
+                double precio = producto.getDouble("preu-unitat");
                 String descripcion = producto.getString("descripcio");
     
                 if (!producto.has("estat_producte")) {
