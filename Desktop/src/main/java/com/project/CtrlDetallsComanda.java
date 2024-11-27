@@ -208,6 +208,10 @@ public class CtrlDetallsComanda implements Initializable {
         this.estatComanda = estadoComanda;
         labelPrecioComanda.setText("Precio: " + precioComanda);
         this.preuComanda = precioComanda;
+
+        productosSeleccionados.clear();
+        actualizarLabelTotalSeleccionado();
+        totalSeleccionado = 0.0;
     }
 
     private void actualizarEstadoProducto(JSONObject producto, String nuevoEstado, Label labelEstado) {
