@@ -41,11 +41,6 @@
                         <Label style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #272727;" text="En Curso" />
                         <ListView fx:id="listaEnCurso" style="-fx-border-color: #a3a3a3;" VBox.vgrow="ALWAYS" />
                     </VBox>
-                    <!-- Segunda lista -->
-                    <VBox alignment="TOP_CENTER" spacing="5" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
-                        <Label style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #272727;" text="Finalizadas" />
-                        <ListView fx:id="listaFinalizadas" style="-fx-border-color: #a3a3a3;" VBox.vgrow="ALWAYS" />
-                    </VBox>
                     <!-- Tercera lista -->
                     <VBox alignment="TOP_CENTER" spacing="5" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
                         <Label style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #272727;" text="Pagadas" />

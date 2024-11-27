@@ -43,9 +43,6 @@ public class CtrlComandes implements Initializable {
     @FXML
     private ListView<VBox> listaEnCurso;
 
-    @FXML
-    private ListView<VBox> listaFinalizadas;
-
     private JSONArray comandas;
 
     @Override
@@ -73,7 +70,6 @@ public class CtrlComandes implements Initializable {
         comandas = jsonArray;
         ObservableList<VBox> pagadas = FXCollections.observableArrayList();
         ObservableList<VBox> enCurso = FXCollections.observableArrayList();
-        ObservableList<VBox> finalizados = FXCollections.observableArrayList();
     
         // Recorrer el JSONArray
         for (int i = 0; i < jsonArray.length(); i++) {
@@ -118,10 +114,6 @@ public class CtrlComandes implements Initializable {
                     case "en curs":
                         enCurso.add(vboxComanda);
                         break;
-                    case "completa":
-                    case "llesta":
-                        finalizados.add(vboxComanda);
-                        break;
                     default:
                         pagadas.add(vboxComanda);
                         break;
@@ -135,7 +127,6 @@ public class CtrlComandes implements Initializable {
         // Asignar las listas observables a las ListView
         listaPagadas.setItems(pagadas);
         listaEnCurso.setItems(enCurso);
-        listaFinalizadas.setItems(finalizados);
     }
     
     private void mostrarDetallesComanda(int idComanda, int idTaula, int idCamarer, String estadoComanda, String stringProductes, double preuComanda) {
