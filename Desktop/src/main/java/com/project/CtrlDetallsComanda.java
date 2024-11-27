@@ -294,11 +294,20 @@ public class CtrlDetallsComanda implements Initializable {
         productosSeleccionados.clear();
         totalSeleccionado = 0;
         actualizarLabelTotalSeleccionado();
-        actualizarComanda(productes, false, "", false);
+        actualizarComanda(productes, comprobarComandaPagada(), "", false);
         cargarProductos(productes);
     }
     
-    
+    public boolean comprobarComandaPagada(){
+        for(int i = 0; i <= productes.length(); i++){
+            JSONObject producto = productes.getJSONObject(i);
+
+            if(!producto.getString("estat_producte").equals("pagat")){
+                return false;
+            }
+        }
+        return true;
+    }
 
     private void pagarTodo() {
         for (int i = 0; i < productes.length(); i++) {
