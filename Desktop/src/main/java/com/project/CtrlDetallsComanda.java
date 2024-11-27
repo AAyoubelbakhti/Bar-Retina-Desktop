@@ -283,7 +283,12 @@ public class CtrlDetallsComanda implements Initializable {
                     JSONObject producto = productes.getJSONObject(i);
                     if (producto.getString("nom").equals(nombre) && producto.getString("estat_producte").equals(estadoActual)) {
                         int cantidadRestante = producto.getInt("quantitat") - cantidadSeleccionada;
-                        producto.put("quantitat", cantidadRestante);
+                        if(cantidadRestante <= 0){
+                            productes.remove(i);
+                        } else{
+                            producto.put("quantitat", cantidadRestante);
+                        }
+                        
                         JSONObject productePagat = new JSONObject(productoSeleccionado.toString());
                         productePagat.put("estat_producte", "pagat");
                         productes.put(productePagat);
