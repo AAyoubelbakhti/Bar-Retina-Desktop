@@ -148,7 +148,7 @@ public class Main extends Application {
             case "tags":
             case "productes":
                 System.out.println("Se ha recibido respuesta!");
-                System.out.println(msgObj.toString());
+                //System.out.println(msgObj.toString());
 
                 ctrlProductes.cargarProductos(msgObj.toString());
                 break;
@@ -164,14 +164,14 @@ public class Main extends Application {
                 break;
 
             case "comanda-taula":
-                System.out.println("hola2");
+                // System.out.println("hola2");
                 System.out.println(msgObj);
                 JSONObject comanda  = new JSONObject(msgObj.getString("body"));
-                System.out.println("hola3");
+                // System.out.println("hola3");
                 UtilsViews.setViewAnimating("ViewDetallsComanda");
-                System.out.println("hola4");
+                // System.out.println("hola4");
                 ctrlDetallsComanda.mostrarDatosComanda(comanda.getInt("id_comanda"), comanda.getInt("id_taula"), comanda.getInt("id_cambrer"), comanda.getString("estat_comanda"), comanda.getDouble("preu_comanda"));
-                System.out.println("hola5");
+                // System.out.println("hola5");
                 ctrlDetallsComanda.cargarProductos(new JSONArray(comanda.getString("comanda")));
                 break;
 
@@ -192,6 +192,6 @@ public class Main extends Application {
         System.out.println("Se ha enviado el mensaje al servidor");
         System.out.println(message);
         wsClient.safeSend(message);
-        System.out.println("Hola");
+        // System.out.println("Hola");
     }
 }
