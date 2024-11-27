@@ -35,44 +35,78 @@ public class CtrlConfig implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // if(existeArchivoConfig()){
-        // txtMessage.setText("Ya existe el archivo!");
-        // buttonConectar.setDisable(true);
-        // }else{
-        // buttonConectar.setOnAction(event -> connect());
-        // }
+        if (existeArchivoConfig()) {
+            if (cargarDatosDesdeXml()) {
+                if (connect()) {
+                    txtMessage.setText("Conexión exitosa con la configuración existente.");
+                    buttonConectar.setDisable(true);
+                } else {
+                    txtMessage.setText("Error al conectar con la configuración existente.");
+                }
+            } else {
+                txtMessage.setText("Error al cargar el archivo de configuración.");
+            }
+        } else {
+            txtMessage.setText("No se encontró el archivo de configuración.");
+            buttonConectar.setOnAction(event -> connect());
+        }
+    }
 
-        buttonConectar.setOnAction(event -> connect());
+    public boolean cargarDatosDesdeXml() {
+        try {
+            File archivo = new File("configuracion.xml");
+            if (!archivo.exists()) {
+                return false;
+            }
 
+            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+            Document doc = dBuilder.parse(archivo);
+
+            doc.getDocumentElement().normalize();
+
+            String ubicacion = doc.getElementsByTagName("ubicacion").item(0).getTextContent();
+            String url = doc.getElementsByTagName("url").item(0).getTextContent();
+
+            textUbicacion.setText(ubicacion);
+            textUrl.setText(url);
+
+            return true;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     public boolean existeArchivoConfig() {
-        File archivo = new File("configuracion.xml");
-        return archivo.exists();
+        try {
+            File archivo = new File("configuracion.xml");
+            return archivo.exists();
+        } catch (Exception e) {
+            e.printStackTrace();
+            txtMessage.setText("Error al verificar el archivo de configuración.");
+            return false;
+        }
     }
 
     public void guardarDatosEnXml() {
         try {
-            // Crear el documento XML
             DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
 
-            // Elemento raíz
             Document doc = docBuilder.newDocument();
             Element rootElement = doc.createElement("configuracion");
             doc.appendChild(rootElement);
 
-            // Crear el elemento ubicación
             Element ubicacion = doc.createElement("ubicacion");
             ubicacion.appendChild(doc.createTextNode(textUbicacion.getText()));
             rootElement.appendChild(ubicacion);
 
-            // Crear el elemento URL
             Element url = doc.createElement("url");
             url.appendChild(doc.createTextNode(textUrl.getText()));
             rootElement.appendChild(url);
 
-            // Escribir el contenido en un archivo XML
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
             DOMSource source = new DOMSource(doc);
@@ -87,14 +121,15 @@ public class CtrlConfig implements Initializable {
     }
 
     private boolean connect() {
-
         if (!textUbicacion.getText().equals("") && !textUrl.getText().equals("")) {
             try {
                 Main.connectToServer();
-                guardarDatosEnXml();
+                if (!existeArchivoConfig()) {
+                    guardarDatosEnXml();
+                }
                 return true;
             } catch (Exception e) {
-                System.out.println("Error !!!!!!!!");
+                System.out.println("Error: "+ e);
             }
         }
 
